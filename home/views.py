@@ -20,6 +20,7 @@ def home(request):
 def display_quiz_teacher(request , quiz_id):
     all_ques = quiz_ques.objects.filter(quiz_id = quiz_id)
     context = {'all_ques' : all_ques}
+    print(all_ques)
     return render(request , 'display_quiz_teacher.html' , context)
 
 def display_course_teacher(request , course_id):
