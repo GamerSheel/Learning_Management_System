@@ -1,0 +1,117 @@
+
+</div>
+
+
+<div class="container mt-5">
+  <form class="col-6 mx-auto card p-3 shadow-lg" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h2> Signup!</h2>
+    <hr>
+    <!-- <div class="form-floating mb-3">
+      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+      <label for="floatingInput">Email address</label>
+      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com"> 
+    </div> -->
+
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" id="signup_f_name" name="signup_f_name" required>
+      <label for="signup_f_name">First Name</label>
+    </div>
+
+    <div class="col-md-6">
+      <label for="signup_l_name" class="form-label">Last Name</label>
+      <input type="text" class="form-control" id="signup_l_name" name="signup_l_name">
+    </div>
+
+    <div class="col-md-6">
+      <label for="signup_email" class="form-label">Email Id</label>
+      <input type="email" class="form-control" id="signup_email" name="signup_email">
+      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    </div>
+
+    <div class="col-md-6">
+      <label for="signup_pwd" class="form-label">Password</label>
+      <input type="password" class="form-control" id="signup_pwd" name="signup_pwd">
+      <div id="passwordHelpBlock" class="form-text">
+        Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special
+        characters, or emoji.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="signup_DOB">DOB</label>
+      <input id="signup_DOB" name="signup_DOB" class="form-control" type="date" />
+    </div>
+
+    <div class="col-md-6">
+      <label for="signup_mobile" class="form-label">Mobile No</label>
+      <input type="text" class="form-control" id="signup_mobile" name="signup_mobile">
+    </div>
+
+    <div class="col-12">
+      <label for="signup_address" class="form-label">Address</label>
+      <input type="text" class="form-control" id="signup_address" name="signup_address" placeholder="1234 Main St">
+    </div>
+
+    <div class="mb-3">
+      <label for="signup_image" class="form-label">Image</label>
+      <input type="file" class="form-control" id="signup_image" name="signup_image">
+    </div>
+
+    <div class="col-md-4">
+      <label for="signup_role" class="form-label">Role</label>
+      <select id="signup_role" name="signup_role" class="form-select">
+        <option selected>Choose...</option>
+        <option>Teacher</option>
+        <option>Student</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="signup_institute" class="form-label">Institute</label>
+      <input type="text" class="form-control" id="signup_institute" name="signup_institute" placeholder="1234 Main St">
+    </div>
+
+    <div class="col-12">
+      <label for="signup_role_desc" class="form-label">Role Description</label>
+      <input type="text" class="form-control" id="signup_role_desc" name="signup_role_desc" placeholder="1234 Main St">
+    </div>
+
+    <div class="col-12">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="signup_check" name="signup_check">
+        <label class="form-check-label" for="signup_check">
+          All information provided is correct!
+        </label>
+      </div>
+    </div>
+
+    <p>Already have an acoount <a href="/login/">Login!</a></p>
+    <div class="col-12">
+      <button type="submit" class="btn btn-success">Sign Up</button>
+    </div>
+
+    <div class="col-12">
+      <a href='/delete_user/{{"suhanibajpai13@gmail.com"}}' class="btn btn-danger">
+        Delete
+      </a>
+    </div>
+  </form>
+
+
+
+
+
+
+  <div class="container mt-5">
+    <form class="col-6 mx-auto card p-3 shadow-lg">
+      <div class="col-md-6">
+        <label for="search_user" class="form-label">Search User</label>
+        <input type="text" class="form-control" id="search_user" name="search_user">
+      </div>
+
+      <div class="col-12 mt-2">
+        <button type="submit" class="btn btn-primary">Search</button>
+      </div>
+    </form>
+  </div>

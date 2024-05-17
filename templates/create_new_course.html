@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block start %}
+
+<div class="container mt-5">
+  <form class="col-6 mx-auto card p-3 shadow-lg" method="post">
+    {% csrf_token %}
+    <h2> Create New Course!</h2>
+    <hr>
+
+    <!-- {{form}} -->
+
+    <div class="col-12 form-group">
+      <label class="mb-2" for="{{ form.course_name.id_for_label }}">Course Name</label>
+      <input type="text" class="mb-2 form-control"  name="{{ form.course_name.name }}" required/>
+    </div>
+
+    <div class="col-12 form-group">
+      <label class="mb-2" for="{{ form.course_duration.id_for_label }}">Course Duration in DD:HH:MM</label>
+      <input type="text" class="mb-2 form-control"  name="{{ form.course_duration.name }}" required/>
+    </div>
+
+    <div class="col-12 form-group">
+      <label class="mb-2" for="{{ form.category.id_for_label }}">Category</label>
+      <input type="text" class="mb-1 form-control" name="{{ form.category.name }}" required/>
+    </div>
+
+    <div class="col-12 form-group">
+      <label for="{{ form.topic.id_for_label }}" class="mb-2 form-label">Topic</label>
+      <input type="text" class="mb-2 form-control" name="{{ form.topic.name }}">
+    </div>
+
+    <div class="col-12 form-group">
+      <label for="{{ form.course_material.id_for_label }}" class="mb-2 form-label">Course Material</label>
+      <input type="text" class="mb-4 form-control" name="{{ form.course_material.name }}" required/>
+    </div>
+
+    <!-- {{form}} -->
+
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+
+  </form>
+  </div>
+
+  {% endblock %}

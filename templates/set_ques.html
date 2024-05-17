@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block start %}
+
+<div class="container mt-5">
+  <form class="col-6 mx-auto card p-3 shadow-lg" method="post">
+    {% csrf_token %}
+    <h2> Set up the ques!</h2>
+    <hr>
+
+    <!-- {{form}} -->
+<!-- 
+    <div class="col-12 form-group">
+        <input type="hidden"  name="{{ form.ques_no.name }}" value="{{ no_ques }}"/>
+      </div> -->
+
+    <div class="col-12 form-group">
+      <label class="mb-2" for="{{ form.ques_text.id_for_label }}">Question Number {{ ques_no }}</label>
+      <input type="text" class="mb-2 form-control"  name="{{ form.ques_text.name }}" required/>
+    </div>
+
+    <div class="col-12 form-group">
+      <label class="mb-2" for="{{ form.opt1.id_for_label }}">Option 1</label>
+      <input type="text" class="mb-2 form-control"  name="{{ form.opt1.name }}" required/>
+    </div>
+
+    <div class="col-12 form-group">
+      <label class="mb-2" for="{{ form.opt2.id_for_label }}">Option 2</label>
+      <input type="text" class="mb-1 form-control" name="{{ form.opt2.name }}" required/>
+    </div>
+
+    <div class="col-12 form-group">
+        <label class="mb-2" for="{{ form.opt3.id_for_label }}">Option 3</label>
+        <input type="text" class="mb-1 form-control" name="{{ form.opt3.name }}" required/>
+    </div>
+
+    <div class="col-12 form-group">
+        <label class="mb-2" for="{{ form.opt4.id_for_label }}">Option 4</label>
+        <input type="text" class="mb-1 form-control" name="{{ form.opt4.name }}" required/>
+    </div>
+
+    <div class="col-12 form-group">
+        <label for="{{ form.correct_opt.id_for_label }}" class="mb-2 form-label">Correct Option</label>
+        <select name="{{ form.correct_opt.name }}" class="mb-2 form-select">
+          <option selected>Choose...</option>
+          <option value="1">Option 1</option>
+          <option value="2">Option 2</option>
+          <option value="3">Option 3</option>
+          <option value="4">Option 4</option>
+        </select>
+      </div>
+
+    <div class="col-12 form-group">
+      <label for="{{ form.ques_marks.id_for_label }}" class="mb-2 form-label">Ques Marks</label>
+      <input type="number" class="mb-4 form-control" name="{{ form.ques_marks.name }}" required/>
+    </div> 
+
+    <!-- {{form}}--->
+
+    {{ ques_no }}
+    {{ quiz_detail.no_of_ques }}
+    {% if ques_no == quiz_detail.no_of_ques %}
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Submit Quiz</button>
+    </div>
+    {% else %}
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Next Question</button>
+    </div>
+    {% endif %}
+
+  </form>
+  </div>
+
+  {% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block start %}
+
+<div class="container mt-5">
+  <form class="col-6 mx-auto card p-3 shadow-lg" method="post" action="{% url 'create_quiz' course_id %}" >
+
+    {% csrf_token %}
+    <h2> Create quiz!</h2>
+    <hr>
+
+    <!-- {{ form }} -->
+
+    <div class="col-12 form-group">
+      <label class="mb-2" for="{{ form.quiz_title.id_for_label }}">Quiz Title</label>
+      <input type="text" class="mb-2 form-control"  name="{{ form.quiz_title.name }}" required/>
+    </div>
+
+    <div class="col-12 form-group">
+      <label class="mb-2" for="{{ form.quiz_duration.id_for_label }}">Quiz Duration in DD:HH:MM</label>
+      <input type="text" class="mb-2 form-control"  name="{{ form.quiz_duration.name }}" required/>
+    </div>
+
+    <div class="col-12 form-group">
+      <label class="mb-2" for="{{ form.no_of_ques.id_for_label }}">Number of questions</label>
+      <input type="number" class="mb-4 form-control" name="{{ form.no_of_ques.name }}" required/>
+    </div>
+
+    <!-- {{form}} -->
+
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+
+  </form>
+  </div>
+
+  {% endblock %}

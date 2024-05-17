@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block start %}
+
+{% if messages %}
+{{ message.tags }}
+
+<div class="alert alert-success" role="alert">
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+
+</div>
+{% endif %}
+
+<!-- <div class="card">
+    <div class="card-header">
+      Featured
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Special title treatment</h5>
+      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div> -->
+<br>
+<br>
+
+<div class="card text-center">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link active"  id="tab1-content-tab" role="tab" data-toggle="tab" aria-current="page" href="#tab1-content">Create New Course</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  id="tab2-content-tab" role="tab" data-toggle="tab" href="#tab2-content">View Existing Courses</a>
+            </li>
+        </ul>
+    </div>
+        <div class="tab-content card-body">
+            <div class="tab-pane fade show active" id="tab1-content">
+                <h5 class="card-title">Create New Courses</h5>
+                <p class="card-text">Try creating some new courses for the students to help them out!</p>
+                <a href="/create_new_course/" class="btn btn-primary">Create!</a>
+            </div>
+
+            <div class="tab-pane fade" id="tab2-content">
+                <h5 class="card-title">Existing Courses</h5>
+                <p class="card-text">View a list of existing courses offered to students</p>
+                <a href="/display_created_courses/" class="btn btn-primary">Show!</a>
+
+            </div>
+        </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+<!-- {{request.user}} -->
+<!-- {{request.user.email}} -->
+
+{% endblock %}

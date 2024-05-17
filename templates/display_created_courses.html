@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block start %}
+
+<div class="container mt-5">
+    <div class="row">
+{% for course in all_courses%}
+<div class="col-md-4 mb-4">
+<div class="card" style="width: 100%;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{ course.course_name }}</h5>
+      <p class="card-text">
+        <p class="mb-0"><strong>Publish Date:</strong> {{ course.publish_date }}</p>
+        <p class="mb-0"><strong>Category:</strong> {{ course.category }}</p>
+        <p class="mb-0"><strong>Topic:</strong> {{ course.topic }}</p>
+        <p class="mb-0"><strong>Duration:</strong> {{ course.course_duration }}</p>
+      </p>
+      <a href="/display_course_teacher/{{ course.course_id }}" class="btn btn-primary">Go to Course</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+</div>
+</div>
+<!-- {{request.user}} -->
+<br>
+<br>
+{{request.user.email}}
+
+{% endblock %}

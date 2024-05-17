@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block start %}
+<br>
+<br>
+
+<div class="card text-center">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link active"  id="tab1-content-tab" role="tab" data-toggle="tab" aria-current="page" href="#tab1-content">Course Material</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  id="tab2-content-tab" role="tab" data-toggle="tab" href="#tab2-content">View Existing Courses</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  id="tab2-content-tab" role="tab" data-toggle="tab" href="#tab3-content">View Existing Courses</a>
+            </li>
+        </ul>
+    </div>
+        <div class="tab-content card-body">
+            <div class="tab-pane fade show active" id="tab1-content">
+                <h5 class="card-title">Course Materail</h5>
+                <p class="card-text">Try creating some new courses for the students to help them out!</p>
+                <a href="/create_new_course/" class="btn btn-primary">Create!</a>
+            </div>
+
+            <div class="tab-pane fade" id="tab2-content">
+                <h5 class="card-title">Existing Courses</h5>
+                <p class="card-text">View a list of existing courses offered to students</p>
+                <a href="/display_created_courses/" class="btn btn-primary">Show!</a>
+            </div>
+
+            <div class="tab-pane fade" id="tab3-content">
+                <h5 class="card-title">Existing Courses</h5>
+                <p class="card-text">View a list of existing courses offered to students</p>
+                <a href="/display_created_courses/" class="btn btn-primary">Show!</a>
+            </div>
+        </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+<!-- {{request.user}} -->
+<!-- {{request.user.email}} -->
+
+
+<div class="container mt-5">
+    <div class="row">
+{% for quiz in all_quiz %}
+<div class="card col-md-4 mb-4" style="width: 100%;">
+    <div class="card-header">
+      Quiz
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{ quiz.quiz_title }}</h5>
+      <p class="card-text">
+        <p class="mb-0"><strong>Duration:</strong> {{ quiz.quiz_duration }}</p>
+        <p class="mb-0"><strong>Number of Questions:</strong> {{ quiz.no_of_ques }}</p>
+      </p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+{% endfor %}
+</div>
+</div>
+
+<!-- {{request.user}} -->
+<br>
+<br>
+{{request.user.email}}
+
+{% endblock %}

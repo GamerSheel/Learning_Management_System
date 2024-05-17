@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block start %}
+
+{% if messages %}
+{{ message.tags }}
+
+<div class="alert alert-success" role="alert">
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- {{request.user}} -->
+{{request.user.email}}
+
+{% endblock %}
