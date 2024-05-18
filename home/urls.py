@@ -15,5 +15,7 @@ urlpatterns = [
     path('teacher_dashboard/' , views.teacher_dashboard , name="teacher_dashboard"),
     path('display_created_courses/' , views.display_created_courses , name="display_created_courses"),
     path('display_course_teacher/<str:course_id>/' , views.display_course_teacher , name="display_course_teacher"),
-    # path('display_quiz_teacher/<str:quiz_id>/' , views.display_quiz_teacher , name="display_quiz_teacher"),
+    path('display_quiz_teacher/<str:quiz_id>/' , views.display_quiz_teacher , name="display_quiz_teacher"),
+    path('delete_ques/<str:ques_id>/' , views.delete_ques , name="delete_ques"),
+    path('update_ques/<str:ques_id>/' , views.update_ques , name="update_ques"),
 ]

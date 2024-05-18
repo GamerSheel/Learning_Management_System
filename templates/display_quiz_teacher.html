@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block start %}
+<br>
+<br>
+
+<p class="text-center">
+<a href="/set_ques/{{ quiz_obj.quiz_id }}" class="btn btn-primary">Add More Question!</a>
+</p>
+
+<div class="container mt-2">
+    <div class="row">
+        {% for ques in all_ques %}
+        <div class="col-md-6 mb-4">
+            <div class="card" style="width: 100%;">
+                <h5 class="card-header">Question Number : {{ forloop.counter }} </h5>
+                <div class="card-body">
+                    <h5 class="card-title">{{ ques.ques_text }}</h5>
+                    <h7 class="card-subtitle text-body-secondary">Marks: {{ques.ques_marks}}</h7>
+                        <p class="card-text mt-0">
+                            <p class="mb-0"><strong>Correct Option :</strong> {{ ques.correct_opt }}</p>
+                            <p class="mb-0"><strong>Option 1:</strong> {{ ques.opt1 }}</p>
+                            <p class="mb-0"><strong>Option 2:</strong> {{ ques.opt2 }}</p>
+                            <p class="mb-0"><strong>Option 3:</strong> {{ ques.opt3 }}</p>
+                            <p class="mb-0"><strong>Option 4:</strong> {{ ques.opt4 }}</p>
+                          </p>
+                        <a href="/update_ques/{{ ques.ques_id }}" class="btn btn-warning">Update</a>
+                        <a href="/delete_ques/{{ ques.ques_id }}" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+{% endblock %}
