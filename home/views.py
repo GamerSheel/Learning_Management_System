@@ -17,16 +17,50 @@ from django.urls import reverse
 def home(request):
     return render(request , 'index.html')
 
+def update_ques(request , ques_id):
+    ques_obj = quiz_ques.objects.filter(ques_id = ques_id)[0]
+    quiz_id = ques_obj.quiz_id.quiz_id
+
+    if request.method == 'POST':
+        update_question_form = update_ques_form(request.POST)
+        if update_question_form.is_valid():
+            ques_text = update_question_form.cleaned_data['ques_text']
+            opt1 = update_question_form.cleaned_data['opt1']
+            opt2 = update_question_form.cleaned_data['opt2']
+            opt3 = update_question_form.cleaned_data['opt3']
+            opt4 = update_question_form.cleaned_data['opt4']
+            correct_opt = update_question_form.cleaned_data['correct_opt']
+            ques_marks = update_question_form.cleaned_data['ques_marks']
+
+            ques_obj = quiz_ques(ques_text=ques_text , opt1=opt1 , opt2=opt2 , opt3=opt3 , 
+                                opt4=opt4 , correct_opt=correct_opt, ques_marks=ques_marks ,
+                                quiz_id=ques_obj.quiz_id , ques_id=ques_id)
+            
+            ques_obj.save()
+
+            return redirect(reverse('display_quiz_teacher' ,args=[quiz_id]))
+    
+    
+    update_question_form = update_ques_form()
+    context = {'form' : update_question_form  , 'ques_obj' : ques_obj, 'quiz_detail':ques_obj.quiz_id}
+    return render(request , 'update_ques.html' , context)
+
+def delete_ques(request , ques_id):
+    ques_obj = quiz_ques.objects.filter(ques_id = ques_id)[0]
+    quiz_id = ques_obj.quiz_id.quiz_id
+    ques_obj.delete()
+    return redirect(reverse('display_quiz_teacher' ,args=[quiz_id]))
+
 def display_quiz_teacher(request , quiz_id):
     all_ques = quiz_ques.objects.filter(quiz_id = quiz_id)
-    context = {'all_ques' : all_ques}
-    print(all_ques)
+    quiz_obj = quiz_desc.objects.filter(quiz_id=quiz_id)
+    context = {'all_ques' : all_ques , 'quiz_obj' : quiz_obj[0]}
     return render(request , 'display_quiz_teacher.html' , context)
 
 def display_course_teacher(request , course_id):
     course_obj = course.objects.filter(course_id = course_id)
     all_quiz = quiz_desc.objects.filter(course_id = course_id)
-    context = {'all_quiz' : all_quiz , 'course_obj' : course_obj}
+    context = {'all_quiz' : all_quiz , 'course_obj' : course_obj[0]}
     return render(request , 'display_course_teacher.html' , context)
 
 def display_created_courses(request):
@@ -57,17 +91,17 @@ def set_ques(request  , quiz_id):
             ques_marks = set_question_form.cleaned_data['ques_marks']
 
             quiz_detail=quiz_desc.objects.get(pk=quiz_id)
-            ques_id=str(request.session['cnt'])+"_" +str(quiz_id)
+            ques_id=str(request.session['cnt'])+ "_" +str(quiz_id)
 
             ques_obj = quiz_ques(ques_text=ques_text , opt1=opt1 , opt2=opt2 , opt3=opt3 , 
                                 opt4=opt4 , correct_opt=correct_opt, ques_marks=ques_marks ,
                                 quiz_id=quiz_detail , ques_id=ques_id)
             
             ques_obj.save()
+            request.session['cnt']+=1
             if(request.session['cnt'] == quiz_detail.no_of_ques):
-                return redirect('/teacher_dashboard')
-            else :
-                request.session['cnt']+=1
+                # request.session['cnt']=0
+                return redirect('/teacher_dashboard')      
             
     quiz_detail=quiz_desc.objects.get(pk=quiz_id)
     set_question_form = set_ques_form()
@@ -91,8 +125,8 @@ def create_quiz(request , course_id):
                                  no_of_ques = no_of_ques , quiz_id = quiz_id , course_id = course_id)
             
             quiz_obj.save()
-            request.session['cnt']=1
-            return redirect(reverse('set_ques' ,args=[quiz_id]))
+            request.session['cnt']=0
+            return redirect(reverse('set_ques' ,args=[quiz_id ]))
         
     new_quiz_form = create_quiz_form()
     context = {'form' : new_quiz_form , 'course_id' : course_id}
