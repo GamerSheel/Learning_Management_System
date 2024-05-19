@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 
+{% block head %}
+<style>
+    .rounded-circle {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
+</style>
+
+{% endblock %}
 {% block start %}
 <br>
 <br>
@@ -15,8 +25,12 @@
                 <a class="nav-link" id="tab2-content-tab" role="tab" data-toggle="tab" href="#tab2-content">Quiz</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="tab2-content-tab" role="tab" data-toggle="tab"
+                <a class="nav-link" id="tab3-content-tab" role="tab" data-toggle="tab"
                     href="#tab3-content">Assignments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab4-content-tab" role="tab" data-toggle="tab" href="#tab4-content">View
+                    Feedbacks</a>
             </li>
         </ul>
     </div>
@@ -33,9 +47,9 @@
 
         <div class="tab-pane fade" id="tab2-content">
             <h5 class="card-title">Quizzes</h5>
-            
+
             <p class="card-text">
-            <a href="/create_quiz/{{ course_obj.course_id }}" class="btn btn-primary">Create More Quiz!</a>
+                <a href="/create_quiz/{{ course_obj.course_id }}" class="btn btn-primary">Create More Quiz!</a>
             <div class="container text-start">
                 <div class="row">
                     {% for quiz in all_quiz %}
@@ -46,7 +60,8 @@
                         <div class="card-body card-text">
                             <p class="mb-0"><strong>Duration:</strong> {{ quiz.quiz_duration }}</p>
                             <p class="mb-0"><strong>Number of Questions:</strong> {{ quiz.no_of_ques }}</p>
-                            <a href="/display_quiz_teacher/{{ quiz.quiz_id }}" class="btn btn-primary mt-2">view ques</a>
+                            <a href="/display_quiz_teacher/{{ quiz.quiz_id }}" class="btn btn-primary mt-2">view
+                                ques</a>
                         </div>
                     </div>
                     {% endfor %}
@@ -59,6 +74,25 @@
             <h5 class="card-title">Existing Courses</h5>
             <p class="card-text">View a list of existing courses offered to students</p>
             <a href="/display_created_courses/" class="btn btn-primary">Show!</a>
+        </div>
+
+        <div class="tab-pane fade" id="tab4-content">
+            <h4 class="text-info">View what the students have to say about your course</h4>
+            <hr>
+
+            
+            <div class="container mb-4 text-center">
+                <div class="row justify-content">
+                    {% for feedback in feedbacks %}
+                    <div class="col-md-4">
+                        <img src="https://via.placeholder.com/150" class="rounded-circle mb-3" alt="Profile Image">
+                        <h5 class="mb-3">{{feedback.user_id.first_name}}  {{feedback.user_id.last_name}}</h5>
+                        <p>{{feedback.feedback_text}}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
