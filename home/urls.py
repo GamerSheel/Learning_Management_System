@@ -18,4 +18,6 @@ urlpatterns = [
     path('display_quiz_teacher/<str:quiz_id>/' , views.display_quiz_teacher , name="display_quiz_teacher"),
     path('delete_ques/<str:ques_id>/' , views.delete_ques , name="delete_ques"),
     path('update_ques/<str:ques_id>/' , views.update_ques , name="update_ques"),
+    path('student_dashboard/' , views.student_dashboard, name="student_dashboard"),
+    path('enroll/<str:course_id>' , views.enroll , name = "enroll"),
 ]
