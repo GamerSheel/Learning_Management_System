@@ -33,6 +33,11 @@ class update_ques_form(forms.ModelForm):
         model = quiz_ques
         fields = [ 'ques_text' , 'opt1' , 'opt2', 'opt3', 'opt4', 'correct_opt' , 'ques_marks']
 
+class feedback_form(forms.ModelForm):
+    class Meta:
+        model = feedback
+        fields = [ 'feedback_text' ,]
+
 # class user_detail_forms(forms.Form):
 #     First_Name = forms.CharField(label = "First Name")
 #     Last_Name = forms.CharField(label = "Last Name" , required=False, widget=forms.TextInput(attrs={'class' : "form-control"}))

@@ -17,46 +17,94 @@ from django.urls import reverse
 def home(request):
     return render(request , 'index.html')
 
+def give_feedback(request , course_id):
+    course_obj = course.objects.filter(course_id=course_id)[0]
+    if request.method == 'POST':
+        new_feedback_form = feedback_form(request.POST)
+        
+        if new_feedback_form.is_valid():
+            feedback_text = new_feedback_form.cleaned_data['feedback_text']
+
+            feedback_date = datetime.now()
+            student_id = user_details.objects.get(pk= request.user.email)
+            
+            feedback_obj = feedback(user_id=student_id , feedback_date = feedback_date , feedback_text=feedback_text , course_id=course_obj)
+            
+            feedback_obj.save()
+            return redirect(reverse('display_course_teacher' ,args=[course_id]))
+
+    new_feedback_form =feedback_form()
+    context={'course_obj' : course_obj , 'form':new_feedback_form}
+    return render(request , 'give_feedback.html' , context)
+
+def show_full_result(request , result_id ):
+    result_obj = result.objects.filter(result_id=result_id)[0]
+    result_question_obj = result_question.objects.filter(result_id=result_id)
+    # print(result_question_obj.ques_id.opt1)
+    context= { 'result_obj' : result_obj , 'result_question_obj': result_question_obj  }
+    return render(request , 'show_full_result.html' , context)
+
+def result_after_quiz(request , result_id , score,total_no_ques ,total_answered ,correctly_answered):
+    print(result_id)
+    # print( ,  score,total_no_ques ,total_answered ,correctly_answered)
+    context = {'result_id':result_id , 'score': score, 'total_no_ques': total_no_ques , 
+               'total_answered':total_answered ,'correctly_answered':correctly_answered}
+    # context={}
+    return render(request , 'result_after_quiz.html' , context)
+
 def give_quiz(request , quiz_id):
     all_ques = quiz_ques.objects.filter(quiz_id = quiz_id)
     quiz_obj = quiz_desc.objects.filter(quiz_id=quiz_id)[0]
     
     if request.method== 'POST':
         
-        result_id="1"
+        result_id="2"
         # result_id = quiz_id + "_" + str(datetime.now())
-        print(request.user.email)
+        # print(request.user.email)
         user=user_details.objects.get(email = request.user.email)
         result_obj = result(quiz_id = quiz_obj, student_id =user , result_id=result_id , marks=0 , result_date=datetime.now() )
         result_obj.save()
         score=0
+        total_no_ques=len(all_ques)
+        total_answered=0
+        correctly_answered=0
 
         for ques in all_ques:
             answer_marked = request.POST.get(ques.ques_id)
             marked_option = 0
             if answer_marked == ques.opt1 :
+                total_answered+=1
                 marked_option=1
                 if ques.correct_opt==1 :
+                    correctly_answered+=1
                     score+=ques.ques_marks
             elif answer_marked == ques.opt2 :
+                total_answered+=1
                 marked_option=2
                 if ques.correct_opt==2 :
+                    correctly_answered+=1
                     score+=ques.ques_marks
             elif answer_marked == ques.opt3 :
+                total_answered+=1
                 marked_option=3
                 if ques.correct_opt==3 :
+                    correctly_answered+=1
                     score+=ques.ques_marks
             elif answer_marked == ques.opt4 :
+                total_answered+=1
                 marked_option=4
                 if ques.correct_opt==4 :
+                    correctly_answered+=1
                     score+=ques.ques_marks
 
             result_question_obj = result_question(question_id=ques ,  marked_option=marked_option, result_id=result_obj)
             result_question_obj.save()
         
         result.objects.filter(result_id="1").update(marks=score)
+
         #change it to student dashboard
-        return redirect('teacher_dashboard')
+        args=[]
+        return redirect(reverse('result_after_quiz' ,args=[result_id , score,total_no_ques ,total_answered ,correctly_answered]))
 
 
     duration_seconds  = quiz_obj.quiz_duration.total_seconds()
@@ -104,9 +152,10 @@ def display_quiz_teacher(request , quiz_id):
     return render(request , 'display_quiz_teacher.html' , context)
 
 def display_course_teacher(request , course_id):
+    feedbacks = feedback.objects.filter(course_id=course_id)
     course_obj = course.objects.filter(course_id = course_id)
     all_quiz = quiz_desc.objects.filter(course_id = course_id)
-    context = {'all_quiz' : all_quiz , 'course_obj' : course_obj[0]}
+    context = {'all_quiz' : all_quiz , 'course_obj' : course_obj[0] , 'feedbacks' : feedbacks}
     return render(request , 'display_course_teacher.html' , context)
 
 def display_created_courses(request):
@@ -347,6 +396,13 @@ def enroll(request , course_id):
     
     enroll_obj.save()
     return redirect('student_dashboard')
+
+
+
+
+
+
+
 
 
 def signup(request):
