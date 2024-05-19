@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script>
+    function startTimer(duration, display) {
+        var timer = duration, minutes, seconds;
+        var interval = setInterval(function () {
+            hours = parseInt(timer / (60*60), 10);
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                clearInterval(interval);
+                alert("Time's up! Submitting quiz...");
+                document.getElementById("give_quiz_form").submit();
+            }
+        }, 1000);
+    }
+
+    window.onload = function () {
+        var duration =parseInt("{{ duration_seconds}}"); // 10 minutes in seconds
+        var display = document.querySelector('#timer');
+        startTimer(duration, display);
+    };
+</script>
+{% endblock %}
+
+{% block start %}
+<br>
+<br>
+
+<div class="container mt-2 mb-4">
+        <div class="row text-center">
+        <h1 class="mb-4">{{quiz_obj.quiz_title}}</h1>
+        <h1 class="mb-4">{{quiz_obj.course_id.course_name}}</h1>
+        <p>Time remaining: <span id="timer">10:00</span></p>
+    </div>
+        <form method="post" id="give_quiz_form" >
+            <div class="row justify-content-center">
+            {% csrf_token %}
+            {% for ques in all_ques %}
+            <!-- <div class="d-flex justify-content-between align-items-center"> -->
+            <div class="col-md-9 mb-4">
+                <div class="card" style="width: 100%;">
+                    <div class="form-group">
+                        <h5 class="card-header bg-info">Question Number : {{ forloop.counter }} </h5>
+                        <div class="card-body">
+                            <div class="card-title">
+                                <div class="d-flex justify-content-between ">
+                                    <label for="{{ques.ques_id}}"><h5>{{ ques.ques_text }}</h5></label>
+                                    <h7 class="text-end text-body-secondary">Marks: {{ques.ques_marks}}</h7>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <div class="form-check">
+                            <!-- <p class="card-text mt-0"> -->
+                            <input class="form-check-input" type="radio" name="{{ques.ques_id}}"
+                                id="option_1_{{ques.ques_id}}" value="{{ ques.opt1 }}">
+                            <label class="form-check-label" for="option_1_{{ques.ques_id}}">{{ ques.opt1 }}</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="{{ques.ques_id}}"
+                                id="option_2_{{ques.ques_id}}" value="{{ ques.opt2 }}">
+                            <label class="form-check-label" for="option_2_{{ques.ques_id}}">{{ ques.opt2 }}</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="{{ques.ques_id}}"
+                                id="option_3_{{ques.ques_id}}" value="{{ ques.opt3 }}">
+                            <label class="form-check-label" for="option_3_{{ques.ques_id}}">{{ ques.opt3 }}</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="{{ques.ques_id}}"
+                                id="option_4_{{ques.ques_id}}" value="{{ ques.opt4 }}">
+                            <label class="form-check-label" for="option_4_{{ques.ques_id}}">{{ ques.opt4 }}</label>
+                            <!-- </p> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            </div>
+
+    <div class="text-center">
+    <button type="submit" class="btn btn-primary col-md-2">Submit</button>
+</div>    
+</form>
+    </div>
+
+
+{% endblock %}
