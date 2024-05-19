@@ -37,9 +37,10 @@
                 <a class="nav-link active" aria-current="page" href="/">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/teacher_dashboard/">
                   {% if request.user.is_authenticated and request.user.role == 1 %}
-                  Dashboard
+                  <a class="nav-link" href="/teacher_dashboard/">Dashboard</a>
+                  {% elif request.user.is_authenticated and request.user.role == 2 %}
+                  <a class="nav-link" href="/student_dashboard/">Dashboard</a>
                   {% endif %}
                 </a>
               </li>

@@ -246,8 +246,8 @@ def login_page(request):
                 request.session['rd']=3
                 if request.user.role==1:
                     return redirect('/teacher_dashboard')
-                elif request.user.role == 2:
-                    return redirect('/')
+                elif request.user.role==2:
+                    return redirect('/student_dashboard')
             else:
                 messages.error(request,"Invalid username or password.")
         else:
@@ -293,6 +293,47 @@ def register(request):
 
 
 
+
+
+def student_dashboard(request):
+    rd = request.session.get('rd')
+    if rd==3:
+        name = request.user.first_name + " " + request.user.last_name
+        messages.info(request, f"You are now logged in as {name}.")
+        request.session['rd']=0
+
+    all_courses = course.objects.all()
+    all_enrollments = enrollment.objects.filter(student_id = request.user.email)
+    enrolled_courses=[]
+    for enrollments in all_enrollments:
+        if enrollments.enrollment_status == "1":
+            print(enrollments.course_id.course_id)
+            # print(all_courses[0].course_id)
+            enrolled_courses.append(course.objects.filter(course_id=enrollments.course_id.course_id)[0])
+
+    # print(enrolled_courses[0].publish_date)
+    # 
+    context= {'enrolled_courses' : enrolled_courses ,'all_courses' : all_courses }
+    # context={}
+    # print(len(enrolled_courses))
+    # print(enrolled_courses[0].course_name)
+    print("all good")
+    print()
+
+
+    return render(request , 'student_dashboard.html', context)
+
+def enroll(request , course_id):
+    course_obj = course.objects.filter(course_id=course_id) 
+    enrollment_id = course_id + " " + str(request.user.email)
+    enrollment_date = datetime.now()
+    enrollment_status = "1"
+
+    enroll_obj = enrollment(course_id = course_obj[0], student_id = user_details.objects.filter(email=request.user.email)[0] , enrollment_id = enrollment_id,
+                            enrollment_date = enrollment_date , enrollment_status = enrollment_status)
+    
+    enroll_obj.save()
+    return redirect('student_dashboard')
 
 
 def signup(request):
