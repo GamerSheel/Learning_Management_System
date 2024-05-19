@@ -356,18 +356,31 @@ def student_dashboard(request):
     enrolled_courses=[]
     for enrollments in all_enrollments:
         if enrollments.enrollment_status == "1":
-            print(enrollments.course_id.course_id)
-            # print(all_courses[0].course_id)
             enrolled_courses.append(course.objects.filter(course_id=enrollments.course_id.course_id)[0])
 
+    not_enrolled_courses=[]
+    for courses in all_courses:
+        flag=0
+        for enrollments in all_enrollments:
+            if enrollments.enrollment_status == "1":
+                if enrollments.course_id.course_id == courses.course_id:
+                    flag=1
+                    break
+        if flag == 0:
+            # print()
+            # print(courses)
+            not_enrolled_courses.append(courses)
+            
+    print()
+    #print(not_enrolled_courses[0].course_name)
     # print(enrolled_courses[0].publish_date)
     # 
-    context= {'enrolled_courses' : enrolled_courses ,'all_courses' : all_courses }
+    context= {'enrolled_courses' : enrolled_courses , 'not_enrolled_courses' : not_enrolled_courses , 'all_courses' : all_courses }
     # context={}
     # print(len(enrolled_courses))
     # print(enrolled_courses[0].course_name)
-    print("all good")
-    print()
+    # print("all good")
+    # print()
 
 
     return render(request , 'student_dashboard.html', context)

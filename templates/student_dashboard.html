@@ -85,24 +85,23 @@
             <div class="tab-pane fade" id="tab4-content">
                 <div class="container text-start">
                     <div class="row">
-                       
-                        {% for course in all_courses %}
-                        <div class="col-md-4 mb-4">
-                        <div class="card" style="width: 100%;">
-                            <img src="/static/imgs/mahadev.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ course.course_name }}</h5>
-                                <p class="card-text">
-                                    <p class="mb-0"><strong>Publish Date:</strong> {{ course.publish_date }}</p>
-                                    <p class="mb-0"><strong>Category:</strong> {{ course.category }}</p>
-                                    <p class="mb-0"><strong>Topic:</strong> {{ course.topic }}</p>
-                                    <p class="mb-0"><strong>Duration:</strong> {{ course.course_duration }}</p>
-                                    <p class="mb-0"><strong>Taught by:</strong> {{ course.teacher_id.first_name }}</p>
-                                </p>
-                                <a href="/enroll/{{ course.course_id }}" class="btn btn-primary">Enroll Now!!</a>
+                        {% for course in not_enrolled_courses %}
+                            <div class="col-md-4 mb-4">
+                            <div class="card" style="width: 100%;">
+                                <img src="/static/imgs/mahadev.jpg" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ course.course_name }}</h5>
+                                    <p class="card-text">
+                                        <p class="mb-0"><strong>Publish Date:</strong> {{ course.publish_date }}</p>
+                                        <p class="mb-0"><strong>Category:</strong> {{ course.category }}</p>
+                                        <p class="mb-0"><strong>Topic:</strong> {{ course.topic }}</p>
+                                        <p class="mb-0"><strong>Duration:</strong> {{ course.course_duration }}</p>
+                                        <!-- <p class="mb-0"><strong>Taught by:</strong> {{ course.teacher_id.first_name }}</p> -->
+                                    </p>
+                                    <a href="/enroll/{{ course.course_id }}" class="btn btn-primary">Enroll Now!!</a>
+                                </div>
                             </div>
-                        </div>
-                        </div>
+                            </div>
                         {% endfor %}
                     </div>
                 </div>
