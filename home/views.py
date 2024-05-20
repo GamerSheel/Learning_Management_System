@@ -146,8 +146,14 @@ def delete_ques(request , ques_id):
     return redirect(reverse('display_quiz_teacher' ,args=[quiz_id]))
 
 def display_quiz_teacher(request , quiz_id):
+    print(quiz_id)
     all_ques = quiz_ques.objects.filter(quiz_id = quiz_id)
-    quiz_obj = quiz_desc.objects.filter(quiz_id=quiz_id)
+    # quizzes = quiz_desc.objects.all()
+    quiz_desc.objects.filter(quiz_id=quiz_id+"?").update(quiz_id=quiz_id)
+    quiz_obj = quiz_desc.objects.filter(quiz_id = quiz_id)
+    print(quiz_obj)
+    print(len(quiz_obj))
+    
     context = {'all_ques' : all_ques , 'quiz_obj' : quiz_obj[0]}
     return render(request , 'display_quiz_teacher.html' , context)
 

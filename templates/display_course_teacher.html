@@ -61,7 +61,8 @@
                             <p class="mb-0"><strong>Duration:</strong> {{ quiz.quiz_duration }}</p>
                             <p class="mb-0"><strong>Number of Questions:</strong> {{ quiz.no_of_ques }}</p>
                             <a href="/display_quiz_teacher/{{ quiz.quiz_id }}" class="btn btn-primary mt-2">view
-                                ques</a>
+                                ques </a>
+                                {{quiz.quiz_id}}
                         </div>
                     </div>
                     {% endfor %}
