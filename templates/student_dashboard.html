@@ -42,6 +42,9 @@
             <li class="nav-item">
                 <a class="nav-link"  id="tab4-content-tab" role="tab" data-toggle="tab" href="#tab4-content">New Courses</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link"  id="tab5-content-tab" role="tab" data-toggle="tab" href="#tab5-content">Feedback</a>
+            </li>
         </ul>
     </div>
         <div class="tab-content card-body">
@@ -71,15 +74,48 @@
             </div>
 
             <div class="tab-pane fade" id="tab2-content">
-                <h5 class="card-title">Quizzes</h5>
-                <p class="card-text">Check your upcoming quizzes here</p>
-                <a href="/check_quiz/" class="btn btn-primary">Check!</a>
+                <div class="container text-start">
+                    <div class="row">
+                        {% for quiz in pending_quizzes %}
+                            <div class="col-md-4 mb-4">
+                            <div class="card" style="width: 100%;">
+                                <img src="/static/imgs/mahadev.jpg" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ quiz.course_id.course_name }}</h5>
+                                    <p class="card-text">
+                                        <p class="mb-0"><strong>Quiz Title:</strong> {{ quiz.quiz_title }}</p>
+                                        <p class="mb-0"><strong>Quiz Duration:</strong> {{ quiz.quiz_duration }}</p>
+                                        <p class="mb-0"><strong>Number of questions:</strong> {{ quiz.no_of_ques }}</p>
+                                    </p>
+                                    <a href="/give_quiz/{{ quiz.quiz_id }}" class="btn btn-primary">Give Quiz!!</a>
+                                </div>
+                            </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
 
             <div class="tab-pane fade" id="tab3-content">
-                <h5 class="card-title">Results</h5>
-                <p class="card-text">See your results of the quizzes here</p>
-                <a href="/check_results/" class="btn btn-primary">Check!</a>
+                <div class="container text-start">
+                    <div class="row">
+                        {% for results in all_results %}
+                            <div class="col-md-4 mb-4">
+                            <div class="card" style="width: 100%;">
+                                <img src="/static/imgs/mahadev.jpg" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ results.quiz_id.course_id.course_name }}</h5>
+                                    <p class="card-text">
+                                        <p class="mb-0"><strong>Quiz Title:</strong> {{ results.quiz_id.quiz_title }}</p>
+                                        <p class="mb-0"><strong>Your Marks:</strong> {{ results.marks }}</p>
+                                    </p>
+                                    <a href="/show_full_result/{{ results.result_id }}" class="btn btn-primary">See your full result!!</a>
+                                </div>
+                            </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
 
             <div class="tab-pane fade" id="tab4-content">
@@ -106,6 +142,30 @@
                     </div>
                 </div>
             </div>
+
+            <div class="tab-pane fade" id="tab5-content">
+                <div class="container text-start">
+                    <div class="row">
+                        {% for course in enrolled_courses %}
+                            <div class="col-md-4 mb-4">
+                            <div class="card" style="width: 100%;">
+                                <img src="/static/imgs/mahadev.jpg" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ course.course_name }}</h5>
+                                    <p class="card-text">
+                                        <p class="mb-0"><strong>Category:</strong> {{ course.category }}</p>
+                                        <p class="mb-0"><strong>Topic:</strong> {{ course.topic }}</p>
+                                        <p class="mb-0"><strong>Taught by:</strong> {{ course.teacher_id.first_name }}</p>
+                                    </p>
+                                    <a href="/give_feedback/{{ course.course_id }}" class="btn btn-primary">Give Feedback!!</a>
+                                </div>
+                            </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
         </div>
 
 
