@@ -40,7 +40,6 @@
         <div class="tab-pane fade show active" id="tab1-content">
             <h5 class="card-title">Course Material</h5>
             <p class="card-text">
-                {{ course_obj.course_material }}
             </p>
             <!-- <a href="/create_new_course/" class="btn btn-primary">Create!</a> -->
         </div>
@@ -62,7 +61,6 @@
                             <p class="mb-0"><strong>Number of Questions:</strong> {{ quiz.no_of_ques }}</p>
                             <a href="/display_quiz_teacher/{{ quiz.quiz_id }}" class="btn btn-primary mt-2">view
                                 ques </a>
-                                {{quiz.quiz_id}}
                         </div>
                     </div>
                     {% endfor %}

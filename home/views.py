@@ -373,22 +373,33 @@ def student_dashboard(request):
                     flag=1
                     break
         if flag == 0:
-            # print()
-            # print(courses)
             not_enrolled_courses.append(courses)
-            
-    print()
-    #print(not_enrolled_courses[0].course_name)
-    # print(enrolled_courses[0].publish_date)
-    # 
-    context= {'enrolled_courses' : enrolled_courses , 'not_enrolled_courses' : not_enrolled_courses , 'all_courses' : all_courses }
-    # context={}
-    # print(len(enrolled_courses))
-    # print(enrolled_courses[0].course_name)
-    # print("all good")
+
+    all_quizzes=[]
+    for enrollments in enrolled_courses:
+        quiz_set_with_specific_id=quiz_desc.objects.filter(course_id=enrollments.course_id)
+        if len(quiz_set_with_specific_id) != 0:
+            for quizzes in quiz_set_with_specific_id:
+                all_quizzes.append(quizzes)
+
+    pending_quizzes=[]
+
+    all_results=[]
+
+    for quizzes in all_quizzes:
+        result_for_this_quiz = result.objects.filter(quiz_id=quizzes.quiz_id)
+        if len(result_for_this_quiz) == 0:
+            pending_quizzes.append(quizzes)
+        else:
+            for results in result_for_this_quiz:
+                all_results.append(results)
+    
+
+    # print(all_quizzes)
     # print()
+    # print(all_results)
 
-
+    context= {'enrolled_courses' : enrolled_courses , 'not_enrolled_courses' : not_enrolled_courses , 'all_courses' : all_courses , 'pending_quizzes' : pending_quizzes , 'all_results' : all_results}
     return render(request , 'student_dashboard.html', context)
 
 def enroll(request , course_id):
