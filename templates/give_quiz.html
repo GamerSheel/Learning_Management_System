@@ -1,119 +1,43 @@
 {% extends "base.html" %}
 
 {% block head %}
-
-<style>
-    .full-screen {
-        height: 100%;
-        width: 100%;
-        overflow-y:auto;
-        overflow-x:auto;
-    }
-</style>
-
 <script>
     function startTimer(duration, display) {
         var timer = duration, minutes, seconds;
         var interval = setInterval(function () {
-            hours = parseInt(timer / 3600 , 10);
-            minutes = parseInt((timer % 3600)/60, 10);
+            hours = parseInt(timer / (60*60), 10);
+            minutes = parseInt(timer / 60, 10);
             seconds = parseInt(timer % 60, 10);
 
             hours = hours < 10 ? "0" + hours : hours;
             minutes = minutes < 10 ? "0" + minutes : minutes;
             seconds = seconds < 10 ? "0" + seconds : seconds;
 
-            display.textContent = hours + ":" + minutes + ":" + seconds;
+            display.textContent = minutes + ":" + seconds;
 
             if (--timer < 0) {
                 clearInterval(interval);
                 alert("Time's up! Submitting quiz...");
                 document.getElementById("give_quiz_form").submit();
+                var result_modal = new bootstrap.Modal(document.getElementById('result_modal'));
+                result_modal.show()
             }
         }, 1000);
-    }
-
-    function enterFullScreen(element) {
-        console.log("Attempting to enter full-screen mode");
-            if (element.requestFullscreen) {
-                element.requestFullscreen();
-            } else if (element.mozRequestFullScreen) { // Firefox
-                element.mozRequestFullScreen();
-            } else if (element.webkitRequestFullscreen) { // Chrome, Safari and Opera
-                element.webkitRequestFullscreen();
-            } else if (element.msRequestFullscreen) { // IE/Edge
-                element.msRequestFullscreen();
-            }
-        }
-
-    function exitFullScreen() {
-            console.log("Attempting to exit full-screen mode");
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.mozCancelFullScreen) { // Firefox
-                document.mozCancelFullScreen();
-            } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) { // IE/Edge
-                document.msExitFullscreen();
-            }
-        }
-
-    function handleFullScreenChange() {
-        if (!document.fullscreenElement &&
-            !document.mozFullScreenElement &&
-            !document.webkitFullscreenElement &&
-            !document.msFullscreenElement) {
-            alert("You have exited full-screen mode. The quiz automatically got submitted");
-            document.getElementById("give_quiz_form").submit();
-            var result_modal = new bootstrap.Modal(document.getElementById('result_modal'));
-            result_modal.show()
-        }
     }
 
     window.onload = function () {
         var duration =parseInt("{{ duration_seconds}}"); // 10 minutes in seconds
         var display = document.querySelector('#timer');
-        var quizContainer = document.querySelector('#quizContainer');
-        var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-        var result_modal = new bootstrap.Modal(document.getElementById('result_modal'));
-        myModal.show();
-        // result_modal.show();
-        console.log(duration)
-        console.log(quizContainer)
-        console.log("Starting timer for duration: " + duration + " seconds");
-        // startTimer(duration, display);
-    };
-
-    function startQuiz () {
-        var duration = parseInt("{{ duration_seconds}}"); // 10 minutes in seconds
-        var display = document.querySelector('#timer');
-        var quizContainer = document.querySelector('#quizContainer');
-        enterFullScreen(quizContainer);
         startTimer(duration, display);
     };
-
-    function submitQuiz() {
-            exitFullScreen();
-            document.getElementById("give_quiz_form").submit();
-            var result_modal = new bootstrap.Modal(document.getElementById('result_modal'));
-            result_modal.show()
-        }
-
-    document.addEventListener('fullscreenchange', handleFullScreenChange);
-    document.addEventListener('mozfullscreenchange', handleFullScreenChange);
-    document.addEventListener('webkitfullscreenchange', handleFullScreenChange);
-    document.addEventListener('msfullscreenchange', handleFullScreenChange);
-
 </script>
-
-<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script> -->
 {% endblock %}
 
 {% block start %}
 <br>
 <br>
 
+<<<<<<< HEAD
 <!-- <div class="text-center">
     <button type="button" class="btn btn-primary col-md-2" onclick="startQuiz()">Start Quiz</button>
 </div> -->
@@ -132,23 +56,22 @@
         <div class="modal-footer">
           <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
           <button type="button" class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
+          <a href= "/display_course_student/{{quiz_obj.course_id.course_id}}" class="btn btn-danger">Cancel</a>
+          <!-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="window.location.href = '/';">Cancel</button> -->
         </div>
-      </div>
+      </div> 
     </div>
   </div>
 
 <div id="quizContainer" class="full-screen">
+=======
+>>>>>>> parent of 91f126e (Feedback)
 <div class="container mt-2 mb-4">
-
-        <div class="row justify-content-center">
-            <div class="card mb-3" style="width: 100%;">
-                <div class="card-body text-center">
-                    <h1 class="mb-4">{{quiz_obj.quiz_title}}</h1>
-                    <h1 class="mb-4">{{quiz_obj.course_id.course_name}}</h1>
-                    <p>Time remaining: <span id="timer">00:00:00</span></p>
-                </div>
-              </div>
-        </div>
+        <div class="row text-center">
+        <h1 class="mb-4">{{quiz_obj.quiz_title}}</h1>
+        <h1 class="mb-4">{{quiz_obj.course_id.course_name}}</h1>
+        <p>Time remaining: <span id="timer">10:00</span></p>
+    </div>
         <form method="post" id="give_quiz_form" >
             <div class="row justify-content-center">
             {% csrf_token %}
@@ -201,30 +124,6 @@
 </div>    
 </form>
     </div>
-</div>
 
-<div class="modal fade pt-4" id="result_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg"> <!-- Use modal-lg for a larger modal -->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title text-info text-center" id="exampleModalLabel">Result Summary</h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        
-        <div class="modal-body">
-          <!-- Modal content goes here -->
-          <p class="mb-0"><strong>Total Number of Questions :</strong> {{ ques.correct_opt }}</p>
-          <p class="mb-0"><strong>Number of Questions Answered :</strong> {{ ques.opt1 }}</p>
-          <p class="mb-0"><strong>Number of Questions Answered correctly :</strong> {{ ques.opt2 }}</p>
-          <p class="mb-0"><strong>Total Score :</strong> {{ ques.opt3 }}</p>
-        </div>
-        <div class="modal-footer">
-
-          <button type="button" class="btn btn-primary" onclick="window.location.href = '/';">View full result</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Okay</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
 {% endblock %}

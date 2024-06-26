@@ -2,12 +2,18 @@
 
 {% block start %}
 
-<div class="container mt-5">
+
+<p class="text-center mt-4">
+<a href="/create_new_course" class="btn btn-primary">Create More Courses</a>
+</p>
+
+<div class="container mt-2">
     <div class="row">
+      
 {% for course in all_courses%}
 <div class="col-md-4 mb-4">
 <div class="card" style="width: 100%;">
-    <img src="..." class="card-img-top" alt="...">
+    <img src="/static/imgs/om.jpg" class="card-img-top" alt="...">
     <div class="card-body">
       <h5 class="card-title">{{ course.course_name }}</h5>
       <p class="card-text">
@@ -26,6 +32,6 @@
 <!-- {{request.user}} -->
 <br>
 <br>
-{{request.user.email}}
+<!-- {{request.user.email}} -->
 
 {% endblock %}

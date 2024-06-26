@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-wYnYlf30cu/s5kWfQ8jI9YEzsRUyXqCsLKzZt8ONFwQzQcuq27fYfua5KtMxs" crossorigin="anonymous">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/bootstrap.min.css" rel="stylesheet"
+    integrity="sha512-wYnYlf30cu/s5kWfQ8jI9YEzsRUyXqCsLKzZt8ONFwQzQcuq27fYfua5KtMxs" crossorigin="anonymous">
+
+<style>
+    .rounded-circle {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
+
+    .pdf-container {
+        width: 100%;
+        height: 500px;
+        /* Adjust height as needed */
+        margin-bottom: 20px;
+    }
+
+
+    iframe {
+        width: 100%;
+        height: 100vh;
+        border: none;
+    }
+</style>
+
+{% endblock %}
+{% block start %}
+<br>
+<br>
+
+
+<p class="text-center">
+    <a href="/student_dashboard/" class="btn btn-primary">Back to All Enrolled Courses!</a>
+</p>
+
+<div class="card text-center">
+    <div class="card-header text-center">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" id="tab1-content-tab" role="tab" data-toggle="tab" aria-current="page"
+                    href="#tab1-content">Course Material</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab2-content-tab" role="tab" data-toggle="tab" href="#tab2-content">Quiz</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab3-content-tab" role="tab" data-toggle="tab"
+                    href="#tab3-content">Assignments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab4-content-tab" role="tab" data-toggle="tab" href="#tab4-content">View
+                    Feedbacks</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab5-content-tab" role="tab" data-toggle="tab" href="#tab5-content">Results</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab5-content-tab" role="tab" data-toggle="tab" href="#tab6-content">Give
+                    Feedback</a>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="tab-content card-body">
+        <div class="tab-pane fade show active" id="tab1-content">
+            <h5 class="card-title">Course Material</h5>
+            <p class="card-text">
+                {{ course_obj.course_material }}
+            </p>
+            <p class="card-text">
+                <a href= "{{course_obj.course_pdf.url}}" download class="btn btn-primary mb-4">Course Pdf below -> Download Study Material PDF</a>
+                <!-- <a href="{{pdf_url}}">Course Pdf below -> Download Study Material PDF</a> -->
+                <!-- {{course_obj.course_pdf.url}} -->
+
+                <iframe src="{{course_obj.course_pdf.url}}" class="pdf-container" title="W3Schools Free Online Web Tutorials" type="application/pdf"></iframe>
+
+                <!-- <iframe src="" width="800" height="600" allowfullscreen></iframe> -->
+
+                <!-- <button onclick="window.location.href = '{{ pdf_url }}'">Download PDF</button> -->
+            </p>
+            <!-- <a href="/create_new_course/" class="btn btn-primary">Create!</a> -->
+        </div>
+
+        <div class="tab-pane fade" id="tab2-content">
+            <h5 class="card-title">Pending Quizzes</h5>
+            <p class="card-text">
+
+            <div class="container text-start">
+                <div class="row">
+                    {% for quiz in quiz_remaining %}
+                    <div class="card col-md-4 mb-4" style="width: 100%;">
+                        <div class="card-header">
+                            <h5 class="card-title">{{ quiz.quiz_title }}</h5>
+                        </div>
+                        <div class="card-body card-text">
+                            <p class="mb-0"><strong>Duration:</strong> {{ quiz.quiz_duration }}</p>
+                            <p class="mb-0"><strong>Number of Questions:</strong> {{ quiz.no_of_ques }}</p>
+
+                            <a href="/give_quiz/{{ quiz.quiz_id }}" class="btn btn-primary mt-2">Give Quiz</a>
+                            <!-- {{quiz.quiz_id}} -->
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            </p>
+        </div>
+
+        <div class="tab-pane fade" id="tab3-content">
+            <h5 class="card-title">Existing Courses</h5>
+            <p class="card-text">View a list of existing courses offered to students</p>
+            <a href="/display_created_courses/" class="btn btn-primary">Show!</a>
+        </div>
+
+        <div class="tab-pane fade" id="tab4-content">
+            <h4 class="text-info">View all the feedbacks</h4>
+            <hr>
+
+
+            <div class="container mb-4 text-center">
+                <div class="row justify-content">
+                    {% for feedback in feedbacks %}
+                    <div class="col-md-4">
+                        <img src="https://via.placeholder.com/150" class="rounded-circle mb-3" alt="Profile Image">
+                        <h5 class="mb-3">{{feedback.user_id.first_name}} {{feedback.user_id.last_name}}</h5>
+                        <p>{{feedback.feedback_text}}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tab-pane fade" id="tab5-content">
+            <h5 class="card-title">Results of Various quizzes</h5>
+
+            <p class="card-text">
+                <!-- <a href="/create_quiz/{{ course_obj.course_id }}" class="btn btn-primary">Create More Quiz!</a> -->
+            <div class="container text-start">
+                <div class="row">
+                    {% for result in given_quiz_result %}
+                    <div class="card col-md-4 mb-4" style="width: 100%;">
+                        <div class="card-header">
+                            <h5 class="card-title">{{ result.quiz_id.quiz_title }}</h5>
+                        </div>
+                        <div class="card-body card-text">
+                            <p class="mb-0"><strong>Duration:</strong> {{ result.quiz_id.quiz_duration }}</p>
+                            <p class="mb-0"><strong>Number of Questions:</strong> {{ result.quiz_id.no_of_ques }}</p>
+                            <p class="mb-0"><strong>Marks Obtained :</strong> {{ result.marks }}</p>
+                            <p class="mb-0"><strong>Date:</strong> {{ result.result_date }}</p>
+                            <a href="/show_full_result/{{ result.result_id }}" class="btn btn-primary mt-2">Show
+                                Full Result </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            </p>
+        </div>
+
+        <div class="tab-pane fade" id="tab6-content">
+            <!-- <div class="container text-start">
+                <div class="row">
+
+                    <div class="container mt-5"> -->
+                        <h5 class="card-title">Feedback</h5>
+                        <p class="card-text">Fill the feedback form for this course</p>
+                        <a href="/give_feedback/{{course_obj.course_id}}" class="btn btn-primary">Submit Feedback!</a>
+                        <!-- <form class="col-6 mx-auto card p-3 shadow-lg" method="post">
+                            {% csrf_token %}
+                            <h2 class="text-center text-info"> Fill the Feedback Form!</h2>
+                            <h4 class="text-center text-info">{{course_obj.course_name}}</h4>
+                            <hr>
+
+                            <div class="col-12 form-group">
+                                <label class="mb-2" for="{{ form.feedback_text.id_for_label }}">Feedback</label>
+                                <textarea class="mb-2 form-control" name="{{ form.feedback_text.name }}"
+                                    required></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div> -->
+
+                        <!-- </form> -->
+                    <!-- </div>
+
+                </div> -->
+            <!-- </div> -->
+        </div>
+
+
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-GXX6HjBiy6XbD1QgJNYHnZHmFBPZiwCuvSbsMuRQk2e/eecJ> -->
+
+<!-- {{request.user}} -->
+<!-- {{request.user.email}} -->
+<!-- 
+<div class="container mt-5">
+    <div class="row">
+        {% for quiz in all_quiz %}
+        <div class="card col-md-4 mb-4" style="width: 100%;">
+            <div class="card-header">
+                Quiz
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ quiz.quiz_title }}</h5>
+                <p class="card-text">
+                <p class="mb-0"><strong>Duration:</strong> {{ quiz.quiz_duration }}</p>
+                <p class="mb-0"><strong>Number of Questions:</strong> {{ quiz.no_of_ques }}</p>
+                </p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div> -->
+
+
+<!-- {{request.user}} -->
+<br>
+<br>
+<!-- {{request.user.email}} -->
+
+{% endblock %}
