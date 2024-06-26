@@ -4,45 +4,14 @@
 <br>
 <br>
 
-{% if request.user.is_authenticated and request.user.role == 1 %}
-<p class="text-center">
-    <a href="/show_full_result_teacher/{{ result_obj.quiz_id.quiz_id }}" class="btn btn-primary">Back to All Results!</a>
-</p>
-{% else %}
-<p class="text-center">
-    <a href="/display_course_student/{{ course_id }}" class="btn btn-primary">Back to All Results!</a>
-    <!-- {{course_id}} -->
-</p>
-{% endif %}
-
 <div class="row justify-content-center">
     <div class="card mb-3" style="width: 100%;">
         <div class="card-body text-center">
             <h1 class="mb-4">{{result_obj.quiz_id.course_id.course_name}}</h1>
             <h1 class="mb-4">{{result_obj.quiz_id.quiz_title}}</h1>
             <h3 class="mb-4">{{result_obj.quiz_id.quiz_duration}}</h3>
-            <h3 class="mb-4">{{result_obj.student_id.first_name}} {{result_obj.student_id.last_name}}</h3>
         </div>
       </div>
-</div>
-
-<div class="container mt-2 d-flex justify-content-center align-items-center ">
-<div class="col-md-9 mb-4">
-    <div class="card" style="width: 100%;">
-        <h5 class="card-header bg-info">Result Summary</h5>
-        <div class="card-body">
-            <!-- <h5 class="card-title">{{ result_obj.question_id.ques_text }}</h5> -->
-            <!-- <h7 class="card-subtitle text-body-secondary">Marks: {{result_ques.question_id.ques_marks}}</h7> -->
-                <p class="card-text mt-0">
-                    <p class="mb-0"><strong>Marks Obtained :</strong> {{ result_obj.marks }}</p>
-                    <p class="mb-0"><strong>Result Date:</strong> {{ result_ques.result_date }}</p>
-                    <p class="mb-0"><strong>Total Number of Correct Questions :</strong> -1</p>
-                    <p class="mb-0"><strong>Total Number of Question Attempted:</strong> -1</p>
-                    <p class="mb-0"><strong>Total Number of Questions</strong> -1</p>
-                  </p>
-        </div>
-    </div>
-</div>
 </div>
 
 <div class="container mt-2">

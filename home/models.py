@@ -24,8 +24,8 @@ class UserManager(BaseUserManager):
         user.save(using = self.db)
         return user
 
-    def create_superuser(self ,email, username  , password, **kwargs):
-        user = self.model(username =username, email=email , is_staff=True , is_superuser=True , **kwargs)
+    def create_superuser(self , username , password, **kwargs):
+        user = self.model(email=username , is_staff=True , is_superuser=True , **kwargs)
         user.set_password(password)
         user.save()
         return user
@@ -77,23 +77,14 @@ class course(models.Model):
     category = models.CharField(max_length=100)
     topic = models.CharField(max_length=100)
     course_material = models.TextField()
-    course_pdf = models.FileField(upload_to='static/pdfs/' ,  default='static/pdfs/default_pdf.pdf')
-
-    def __str__(self):
-        return self.course_name
 
     # for sorting records in table in database
     # class Meta:
     #     ordering = ['topic']
 
-# class course_videos(models.Model):
-#     course_id = models.ForeignKey(course , on_delete=models.CASCADE)
-#     video_link = models.FileField(upload_to='pdfs/' ,  default='pdfs/default_pdf.pdf')
-
-
 
 class quiz_desc(models.Model):
-    quiz_id = models.CharField(max_length = 200 , primary_key=True)
+    quiz_id = models.CharField(max_length = 100 , primary_key=True)
     course_id = models.ForeignKey(course , on_delete=models.CASCADE)
     quiz_title = models.CharField(max_length=100)
     quiz_duration = models.DurationField()
@@ -101,7 +92,7 @@ class quiz_desc(models.Model):
     #quiz_status = models.CharField()
 
 class quiz_ques(models.Model):
-    ques_id = models.CharField(max_length=250 , primary_key=True)
+    ques_id = models.CharField(max_length=100 , primary_key=True)
     quiz_id = models.ForeignKey(quiz_desc , on_delete=models.CASCADE)
     ques_text = models.TextField()
     opt1 = models.CharField(max_length=200)

@@ -18,22 +18,10 @@ urlpatterns = [
     path('display_quiz_teacher/<str:quiz_id>/' , views.display_quiz_teacher , name="display_quiz_teacher"),
     path('delete_ques/<str:ques_id>/' , views.delete_ques , name="delete_ques"),
     path('update_ques/<str:ques_id>/' , views.update_ques , name="update_ques"),
-    path('give_quiz/<str:quiz_id>/' , views.give_quiz , name="give_quiz")
+    path('give_quiz/<str:quiz_id>/' , views.give_quiz , name="give_quiz"),
     path('student_dashboard/' , views.student_dashboard, name="student_dashboard"),
     path('enroll/<str:course_id>' , views.enroll , name = "enroll"),
-<<<<<<< HEAD
     path('result_after_quiz/<str:result_id>/<int:score>/<int:total_no_ques>/<int:total_answered>/<int:correctly_answered>/' , views.result_after_quiz , name = "result_after_quiz"),
-    path('show_full_result/<str:result_id>/' , views.show_full_result , name="show_full_result"),
+    path('show_full_result/<str:result_id>/' , views.show_full_result , name="show_full_results"),
     path('give_feedback/<str:course_id>/'  ,views.give_feedback , name="give_feedback"),
-    path('show_full_result_teacher/<str:quiz_id>/'  ,views.show_full_result_teacher , name="show_full_result_teacher"),
-    path('display_course_student/<str:course_id>/' , views.display_course_student , name="display_course_student"),
-    path('about/' , views.about , name="about"),
-    path('services/' , views.services , name="services"),
-    path('blog/' , views.blog , name="blog"),
-    path('faq/' , views.faq , name="faq"),
-    path('terms/' , views.terms , name="terms"),
-    path('privacy/' , views.privacy , name="privacy"),
-=======
-
->>>>>>> parent of 91f126e (Feedback)
 ]
