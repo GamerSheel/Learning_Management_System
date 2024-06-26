@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 
-<<<<<<< HEAD
 {% block head %}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wYnYlf30cu/s5kWfQ8jI9YEzsRUyXqCsLKzZt8ONFwQzQcuq27fYfua5KtMxs" crossorigin="anonymous">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/bootstrap.min.css" rel="stylesheet" integrity="sha512-wYnYlf30cu/s5kWfQ8jI9YEzsRUyXqCsLKzZt8ONFwQzQcuq27fYfua5KtMxs" crossorigin="anonymous">
@@ -27,8 +26,6 @@
 </style>
 
 {% endblock %}
-=======
->>>>>>> parent of 91f126e (Feedback)
 {% block start %}
 <br>
 <br>
@@ -49,7 +46,6 @@
                 <a class="nav-link" id="tab2-content-tab" role="tab" data-toggle="tab" href="#tab2-content">Quiz</a>
             </li>
             <li class="nav-item">
-<<<<<<< HEAD
                 <a class="nav-link" id="tab3-content-tab" role="tab" data-toggle="tab"href="#tab3-content">Assignments</a>
             </li>
             <li class="nav-item">
@@ -58,7 +54,6 @@
             <li class="nav-item">
                 <a class="nav-link" id="tab5-content-tab" role="tab" data-toggle="tab" href="#tab5-content">Results</a>
             </li>
-=======
                 <a class="nav-link" id="tab2-content-tab" role="tab" data-toggle="tab"
                     href="#tab3-content">Assignments</a>
             </li>
@@ -94,17 +89,14 @@
 
         <div class="tab-pane fade" id="tab2-content">
             <h5 class="card-title">Quizzes</h5>
-<<<<<<< HEAD
             <!-- {% if request.user.is_authenticated and request.user.role == 1 %} -->
             <a href="/create_quiz/{{ course_obj.course_id }}" class="btn btn-primary">Create More Quiz!</a>
             <!-- {% endif %} -->
             <p class="card-text">
 
-=======
             
             <p class="card-text">
             <a href="/create_quiz/{{ course_obj.course_id }}" class="btn btn-primary">Create More Quiz!</a>
->>>>>>> parent of 91f126e (Feedback)
             <div class="container text-start">
                 <div class="row">
                     {% for quiz in all_quiz %}
@@ -116,6 +108,8 @@
                             <p class="mb-0"><strong>Duration:</strong> {{ quiz.quiz_duration }}</p>
                             <p class="mb-0"><strong>Number of Questions:</strong> {{ quiz.no_of_ques }}</p>
                             <a href="/display_quiz_teacher/{{ quiz.quiz_id }}" class="btn btn-primary mt-2">view ques</a>
+                            <a href="/display_quiz_teacher/{{ quiz.quiz_id }}" class="btn btn-primary mt-2">view
+                                ques </a>
                         </div>
                     </div>
                     {% endfor %}
@@ -174,8 +168,6 @@
             </p>
         </div>
 
-=======
->>>>>>> parent of 91f126e (Feedback)
     </div>
 </div>
 

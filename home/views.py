@@ -21,7 +21,6 @@ def home(request):
     for i in range(0,4):
         course_obj.append(courses[i])
 
-<<<<<<< HEAD
     context={'course_obj' : course_obj}
     return render(request , 'index.html' , context)
 
@@ -92,23 +91,18 @@ def result_after_quiz(request , result_id , score,total_no_ques ,total_answered 
     return render(request , 'result_after_quiz.html' , context)
 
 @login_required(login_url='/login')
-=======
->>>>>>> parent of 91f126e (Feedback)
 def give_quiz(request , quiz_id):
     all_ques = quiz_ques.objects.filter(quiz_id = quiz_id)
     quiz_obj = quiz_desc.objects.filter(quiz_id=quiz_id)[0]
     
     if request.method== 'POST':
         
-<<<<<<< HEAD
         # result_id="2"
         result_id = quiz_id + "_" + str(datetime.now())
         # print(request.user.email)
-=======
         result_id="1"
         # result_id = quiz_id + "_" + str(datetime.now())
         print(request.user.email)
->>>>>>> parent of 91f126e (Feedback)
         user=user_details.objects.get(email = request.user.email)
         result_obj = result(quiz_id = quiz_obj, student_id =user , result_id=result_id , marks=0 , result_date=datetime.now() )
         result_obj.save()
@@ -137,15 +131,12 @@ def give_quiz(request , quiz_id):
             result_question_obj = result_question(question_id=ques ,  marked_option=marked_option, result_id=result_obj)
             result_question_obj.save()
         
-<<<<<<< HEAD
         result.objects.filter(result_id=result_id).update(marks=score)
 
         return redirect(reverse('result_after_quiz' ,args=[result_id , score,total_no_ques ,total_answered ,correctly_answered]))
-=======
         result.objects.filter(result_id="1").update(marks=score)
         #change it to student dashboard
         return redirect('teacher_dashboard')
->>>>>>> parent of 91f126e (Feedback)
 
 
     duration_seconds  = quiz_obj.quiz_duration.total_seconds()
@@ -192,9 +183,10 @@ def delete_ques(request , ques_id):
 @login_required(login_url='/login')
 def display_quiz_teacher(request , quiz_id):
     print(quiz_id)
+    print(quiz_id)
     all_ques = quiz_ques.objects.filter(quiz_id = quiz_id)
     # quizzes = quiz_desc.objects.all()
-    # quiz_desc.objects.filter(quiz_id=quiz_id+"?").update(quiz_id=quiz_id)
+    quiz_desc.objects.filter(quiz_id=quiz_id+"?").update(quiz_id=quiz_id)
     quiz_obj = quiz_desc.objects.filter(quiz_id = quiz_id)
     print(quiz_obj)
     print(len(quiz_obj))
@@ -207,7 +199,6 @@ def display_quiz_teacher(request , quiz_id):
 def display_course_teacher(request , course_id):
     course_obj = course.objects.filter(course_id = course_id)
     all_quiz = quiz_desc.objects.filter(course_id = course_id)
-<<<<<<< HEAD
     pdf_url = '/media/' + str(course_obj[0].course_pdf)
     pdf_urls = 'media/' + str(course_obj[0].course_pdf)
     url = '/static/' + str(course_obj[0].course_pdf)
@@ -215,9 +206,7 @@ def display_course_teacher(request , course_id):
     # print(pdf_urls)
     context = {'all_quiz' : all_quiz , 'course_obj' : course_obj[0] , 'feedbacks' : feedbacks ,
                 'pdf_url':pdf_url , 'pdf_urls':pdf_urls, 'url':url}
-=======
     context = {'all_quiz' : all_quiz , 'course_obj' : course_obj[0]}
->>>>>>> parent of 91f126e (Feedback)
     return render(request , 'display_course_teacher.html' , context)
 
 @login_required(login_url='/login')
@@ -454,6 +443,42 @@ def student_dashboard(request):
         if enrollments.enrollment_status == "1":
             enrolled_courses.append(course.objects.filter(course_id=enrollments.course_id.course_id)[0])
 
+    not_enrolled_courses=[]
+    for courses in all_courses:
+        flag=0
+        for enrollments in all_enrollments:
+            if enrollments.enrollment_status == "1":
+                if enrollments.course_id.course_id == courses.course_id:
+                    flag=1
+                    break
+        if flag == 0:
+            not_enrolled_courses.append(courses)
+
+    all_quizzes=[]
+    for enrollments in enrolled_courses:
+        quiz_set_with_specific_id=quiz_desc.objects.filter(course_id=enrollments.course_id)
+        if len(quiz_set_with_specific_id) != 0:
+            for quizzes in quiz_set_with_specific_id:
+                all_quizzes.append(quizzes)
+
+    pending_quizzes=[]
+
+    all_results=[]
+
+    for quizzes in all_quizzes:
+        result_for_this_quiz = result.objects.filter(quiz_id=quizzes.quiz_id)
+        if len(result_for_this_quiz) == 0:
+            pending_quizzes.append(quizzes)
+        else:
+            for results in result_for_this_quiz:
+                all_results.append(results)
+    
+
+    # print(all_quizzes)
+    # print()
+    # print(all_results)
+
+    context= {'enrolled_courses' : enrolled_courses , 'not_enrolled_courses' : not_enrolled_courses , 'all_courses' : all_courses , 'pending_quizzes' : pending_quizzes , 'all_results' : all_results}
     not_enrolled_courses=[]
     for courses in all_courses:
         flag=0
