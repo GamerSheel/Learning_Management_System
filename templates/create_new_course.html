@@ -3,7 +3,7 @@
 {% block start %}
 
 <div class="container mt-5">
-  <form class="col-6 mx-auto card p-3 shadow-lg" method="post">
+  <form class="col-6 mx-auto card p-3 shadow-lg" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <h2> Create New Course!</h2>
     <hr>
@@ -33,6 +33,11 @@
     <div class="col-12 form-group">
       <label for="{{ form.course_material.id_for_label }}" class="mb-2 form-label">Course Material</label>
       <input type="text" class="mb-4 form-control" name="{{ form.course_material.name }}" required/>
+    </div>
+
+    <div class="col-12 form-group">
+      <label for="{{ form.course_pdf.id_for_label }}" class="mb-2 form-label">Course Pdf</label>
+      <input type="file" class="mb-4 form-control" name="{{ form.course_pdf.name }}" required/>
     </div>
 
     <!-- {{form}} -->

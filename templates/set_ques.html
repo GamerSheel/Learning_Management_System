@@ -63,6 +63,10 @@
     <div class="col-12">
       <button type="submit" class="btn btn-primary">Submit Quiz</button>
     </div>
+    {% elif ques_no > quiz_detail.no_of_ques %}
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Submit Question</button>
+    </div>
     {% else %}
     <div class="col-12">
         <button type="submit" class="btn btn-primary">Next Question</button>
