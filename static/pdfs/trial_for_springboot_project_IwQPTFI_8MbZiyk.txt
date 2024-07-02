@@ -1,0 +1,4 @@
+trial for springboot project hello world
+
+
+real time chat application like whatsapp in django with messages being stored in mysql with one to many and one to one chats
