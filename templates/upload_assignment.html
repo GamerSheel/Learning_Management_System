@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block start %}
+
+<div class="container mt-5">
+  <form class="col-6 mx-auto card p-3 shadow-lg" method="post" action="{% url 'upload_assignment' course_id %}" enctype="multipart/form-data" >
+
+    {% csrf_token %}
+    <h2> Create Assignment!</h2>
+    <hr>
+
+    <!-- {{ form }} -->
+
+    <div class="col-12 form-group">
+      <label class="mb-2" for="{{ form.assignment_name.id_for_label }}">Assignment Title</label>
+      <input type="text" class="mb-2 form-control"  name="{{ form.assignment_name.name }}" required/>
+    </div>
+
+    <div class="col-12 form-group">
+      <label class="mb-2" for="{{ form.assignment_desc.id_for_label }}">Assignment Description/Instructions</label>
+      <input type="text" class="mb-2 form-control"  name="{{ form.assignment_desc.name }}" required/>
+    </div>
+
+    <div class="col-12 form-group">
+        <label class="mb-2" for="{{ form.assignment_duration.id_for_label }}">Assignment Duration in DD:HH:MM</label>
+        <input type="text" class="mb-2 form-control"  name="{{ form.assignment_duration.name }}" required/>
+    </div>
+
+    <div class="col-12 form-group">
+        <label for="{{ form.assignment_pdf.id_for_label }}" class="mb-2 form-label">Assignment Pdf</label>
+        <input type="file" class="mb-4 form-control" name="{{ form.assignment_pdf.name }}" required/>
+      </div>
+  
+      <!-- 'assignment_name', 'assignment_desc' ,  'assignment_pdf' , 'assignment_duration' -->
+
+    <!-- <div class="col-12 form-group">
+      <label class="mb-2" for="{{ form.no_of_ques.id_for_label }}">Number of questions</label>
+      <input type="number" class="mb-4 form-control" name="{{ form.no_of_ques.name }}" required/>
+    </div> -->
+
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+
+  </form>
+  </div>
+
+  {% endblock %}

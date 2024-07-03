@@ -2,7 +2,7 @@
 
 {% block start %}
 
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
   <form class="col-6 mx-auto card p-3 shadow-lg" method="post">
     {% csrf_token %}
     <h2> Set up the ques!</h2>
@@ -62,6 +62,10 @@
     {% if ques_no == quiz_detail.no_of_ques %}
     <div class="col-12">
       <button type="submit" class="btn btn-primary">Submit Quiz</button>
+    </div>
+    {% elif ques_no > quiz_detail.no_of_ques %}
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Submit Question</button>
     </div>
     {% else %}
     <div class="col-12">
