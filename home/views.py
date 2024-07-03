@@ -10,6 +10,7 @@ from .forms import *
 from django.contrib.auth.hashers import make_password
 from datetime import datetime
 from django.urls import reverse
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 
 # Create your views here.
@@ -17,6 +18,32 @@ from django.urls import reverse
 def home(request):
     return render(request , 'index.html')
 
+def about(request):
+    return render(request , 'about.html')
+
+def services(request):
+    return render(request , 'services.html')
+
+def blog(request):
+    return render(request , 'blog.html')
+
+def faq(request):
+    return render(request , 'faq.html')
+
+def terms(request):
+    return render(request , 'terms.html')
+
+def privacy(request):
+    return render(request , 'privacy.html')
+
+@login_required(login_url='/login')
+def show_full_result_teacher(request ,quiz_id):
+    all_result = result.objects.filter(quiz_id=quiz_id)
+    quiz_obj = quiz_desc.objects.get(pk=quiz_id)
+    context = {'all_result' : all_result , 'quiz_obj':quiz_obj}
+    return render(request , 'show_full_result_teacher.html' , context)
+
+@login_required(login_url='/login')
 def give_feedback(request , course_id):
     course_obj = course.objects.filter(course_id=course_id)[0]
     if request.method == 'POST':
@@ -37,6 +64,7 @@ def give_feedback(request , course_id):
     context={'course_obj' : course_obj , 'form':new_feedback_form}
     return render(request , 'give_feedback.html' , context)
 
+@login_required(login_url='/login')
 def show_full_result(request , result_id ):
     result_obj = result.objects.filter(result_id=result_id)[0]
     result_question_obj = result_question.objects.filter(result_id=result_id)
@@ -44,6 +72,7 @@ def show_full_result(request , result_id ):
     context= { 'result_obj' : result_obj , 'result_question_obj': result_question_obj  }
     return render(request , 'show_full_result.html' , context)
 
+@login_required(login_url='/login')
 def result_after_quiz(request , result_id , score,total_no_ques ,total_answered ,correctly_answered):
     print(result_id)
     # print( ,  score,total_no_ques ,total_answered ,correctly_answered)
@@ -52,6 +81,7 @@ def result_after_quiz(request , result_id , score,total_no_ques ,total_answered 
     # context={}
     return render(request , 'result_after_quiz.html' , context)
 
+@login_required(login_url='/login')
 def give_quiz(request , quiz_id):
     all_ques = quiz_ques.objects.filter(quiz_id = quiz_id)
     quiz_obj = quiz_desc.objects.filter(quiz_id=quiz_id)[0]
@@ -111,6 +141,7 @@ def give_quiz(request , quiz_id):
     context = {'all_ques' : all_ques , 'quiz_obj' : quiz_obj , 'duration_seconds' : duration_seconds}
     return render(request , 'give_quiz.html' , context )
 
+@login_required(login_url='/login')
 def update_ques(request , ques_id):
     ques_obj = quiz_ques.objects.filter(ques_id = ques_id)[0]
     quiz_id = ques_obj.quiz_id.quiz_id
@@ -139,12 +170,14 @@ def update_ques(request , ques_id):
     context = {'form' : update_question_form  , 'ques_obj' : ques_obj, 'quiz_detail':ques_obj.quiz_id}
     return render(request , 'update_ques.html' , context)
 
+@login_required(login_url='/login')
 def delete_ques(request , ques_id):
     ques_obj = quiz_ques.objects.filter(ques_id = ques_id)[0]
     quiz_id = ques_obj.quiz_id.quiz_id
     ques_obj.delete()
     return redirect(reverse('display_quiz_teacher' ,args=[quiz_id]))
 
+@login_required(login_url='/login')
 def display_quiz_teacher(request , quiz_id):
     print(quiz_id)
     all_ques = quiz_ques.objects.filter(quiz_id = quiz_id)
@@ -157,6 +190,8 @@ def display_quiz_teacher(request , quiz_id):
     context = {'all_ques' : all_ques , 'quiz_obj' : quiz_obj[0]}
     return render(request , 'display_quiz_teacher.html' , context)
 
+@xframe_options_exempt
+@login_required(login_url='/login')
 def display_course_teacher(request , course_id):
     feedbacks = feedback.objects.filter(course_id=course_id)
     course_obj = course.objects.filter(course_id = course_id)
@@ -164,12 +199,14 @@ def display_course_teacher(request , course_id):
     context = {'all_quiz' : all_quiz , 'course_obj' : course_obj[0] , 'feedbacks' : feedbacks}
     return render(request , 'display_course_teacher.html' , context)
 
+@login_required(login_url='/login')
 def display_created_courses(request):
     all_courses = course.objects.filter(teacher_id = request.user.email)
     # print(all_courses)
     context = {'all_courses' : all_courses}
     return render(request , 'display_created_courses.html' , context)
 
+@login_required(login_url='/login')
 def teacher_dashboard(request):
     rd = request.session.get('rd')
     if rd==3:
@@ -179,6 +216,7 @@ def teacher_dashboard(request):
 
     return render(request , 'teacher_dashboard.html')
 
+@login_required(login_url='/login')
 def set_ques(request  , quiz_id): 
     if request.method == 'POST':
         set_question_form = set_ques_form(request.POST)
@@ -209,6 +247,7 @@ def set_ques(request  , quiz_id):
     context = {'form' : set_question_form  , 'ques_no':request.session['cnt'] , 'quiz_detail':quiz_detail}
     return render(request , 'set_ques.html' , context)
 
+@login_required(login_url='/login')
 def create_quiz(request , course_id):
     if request.method =='POST':
         new_quiz_form = create_quiz_form(request.POST)
@@ -233,6 +272,33 @@ def create_quiz(request , course_id):
     context = {'form' : new_quiz_form , 'course_id' : course_id}
     return render(request , 'create_quiz.html' , context)
 
+@login_required(login_url='/login')
+def upload_assignment(request , course_id):
+    
+    if request.method =='POST':
+        new_quiz_form = assignment_form(request.POST , request.FILES)
+
+        if new_quiz_form.is_valid():
+            assignment_name = new_quiz_form.cleaned_data['assignment_name']
+            assignment_desc = new_quiz_form.cleaned_data['assignment_desc']
+            assignment_pdf = new_quiz_form.cleaned_data['assignment_pdf']
+            assignment_duration = new_quiz_form.cleaned_data['assignment_duration']
+
+            assignment_id = course_id+ "" + assignment_name + "" + str(datetime.now())
+            course_id = course.objects.get(pk = course_id)
+
+            assignment_obj = assignments(assignment_name = assignment_name , assignment_duration = assignment_duration,
+                                 assignment_pdf = assignment_pdf , assignment_desc = assignment_desc , course_id = course_id,
+                                 assignment_id = assignment_id)
+            
+            assignment_obj.save()
+            return redirect(reverse('display_course_teacher' ,args=[assignment_obj.course_id.course_id ]))
+        
+    new_assignment_form = assignment_form()
+    context = {'form' : new_assignment_form , 'course_id' : course_id}
+    return render(request , 'upload_assignment.html' , context)
+
+@login_required(login_url='/login')
 def create_new_course(request):
     if request.method == 'POST':
         new_course_form = create_new_course_form(request.POST)
@@ -349,7 +415,7 @@ def register(request):
 
 
 
-
+@login_required(login_url='/login')
 def student_dashboard(request):
     rd = request.session.get('rd')
     if rd==3:
@@ -402,6 +468,49 @@ def student_dashboard(request):
     context= {'enrolled_courses' : enrolled_courses , 'not_enrolled_courses' : not_enrolled_courses , 'all_courses' : all_courses , 'pending_quizzes' : pending_quizzes , 'all_results' : all_results}
     return render(request , 'student_dashboard.html', context)
 
+@xframe_options_exempt
+@login_required(login_url='/login')
+def display_course_student(request , course_id):
+    print(course_id)
+    course_obj = course.objects.filter(course_id = course_id)
+    if request.method == 'POST':
+        new_feedback_form = feedback_form(request.POST)
+        
+        if new_feedback_form.is_valid():
+            feedback_text = new_feedback_form.cleaned_data['feedback_text']
+
+            feedback_date = datetime.now()
+            student_id = user_details.objects.get(pk= request.user.email)
+            
+            feedback_obj = feedback(user_id=student_id , feedback_date = feedback_date , feedback_text=feedback_text , course_id=course_obj[0])
+            
+            feedback_obj.save()
+            return redirect(reverse('display_course_student' ,args=[course_id]))
+
+    new_feedback_form =feedback_form()
+    feedbacks = feedback.objects.filter(course_id=course_id)
+    all_quiz = quiz_desc.objects.filter(course_id = course_id)
+    quiz_remaining =[]
+    given_quiz_result=[]
+    for quiz in all_quiz:
+        if result.objects.filter(quiz_id = quiz.quiz_id , student_id=request.user.email):
+            given_quiz_result.append(result.objects.filter(quiz_id = quiz.quiz_id , student_id=request.user.email)[0])
+        else:
+            quiz_remaining.append(quiz)
+    # print(course_obj)
+    # print(course_obj[0])
+    pdf_url = '/media/' + str(course_obj[0].course_pdf)
+    pdf_urls = 'media/' + str(course_obj[0].course_pdf)
+    url = '/static/' + str(course_obj[0].course_pdf)
+    print(pdf_url)
+    print(pdf_urls)
+    all_assignments = assignments.objects.filter(course_id = course_id)
+    context = {'all_quiz' : all_quiz , 'course_obj' : course_obj[0] , 'feedbacks' : feedbacks ,
+                'pdf_url':pdf_url , 'pdf_urls':pdf_urls, 'url':url , 'form':new_feedback_form , 
+                'quiz_remaining' : quiz_remaining , 'given_quiz_result':given_quiz_result , 'all_assignments':all_assignments}
+    return render(request , 'display_course_student.html' , context)
+
+@login_required(login_url='/login')
 def enroll(request , course_id):
     course_obj = course.objects.filter(course_id=course_id) 
     enrollment_id = course_id + " " + str(request.user.email)

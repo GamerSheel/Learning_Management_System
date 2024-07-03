@@ -2,7 +2,7 @@ from django.urls import path
 from home import views
 
 urlpatterns = [
-    path('', views.home , name="home" ),
+path('', views.home , name="home" ),
     path('register/' , views.register , name="register"),
     path('signup/' , views.signup , name="signup"),
     path('delete_user/<email>/' , views.delete_user ,  name="delete_user"),
@@ -22,6 +22,15 @@ urlpatterns = [
     path('student_dashboard/' , views.student_dashboard, name="student_dashboard"),
     path('enroll/<str:course_id>' , views.enroll , name = "enroll"),
     path('result_after_quiz/<str:result_id>/<int:score>/<int:total_no_ques>/<int:total_answered>/<int:correctly_answered>/' , views.result_after_quiz , name = "result_after_quiz"),
-    path('show_full_result/<str:result_id>/' , views.show_full_result , name="show_full_results"),
+    path('show_full_result/<str:result_id>/' , views.show_full_result , name="show_full_result"),
     path('give_feedback/<str:course_id>/'  ,views.give_feedback , name="give_feedback"),
+    path('show_full_result_teacher/<str:quiz_id>/'  ,views.show_full_result_teacher , name="show_full_result_teacher"),
+    path('display_course_student/<str:course_id>/' , views.display_course_student , name="display_course_student"),
+    path('about/' , views.about , name="about"),
+    path('services/' , views.services , name="services"),
+    path('blog/' , views.blog , name="blog"),
+    path('faq/' , views.faq , name="faq"),
+    path('terms/' , views.terms , name="terms"),
+    path('privacy/' , views.privacy , name="privacy"),
+    path('upload_assignment/<str:course_id>/' , views.upload_assignment , name="upload_assignment"),
 ]
