@@ -2,10 +2,10 @@
 
 {% block start %}
 
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
   <form class="col-6 mx-auto card p-3 shadow-lg" method="post">
     {% csrf_token %}
-    <h2> Set up the ques!</h2>
+    <h2> Update question!</h2>
     <hr>
 
     <!-- {{form}} -->
@@ -75,7 +75,9 @@
 
     <!-- {{ ques_no }}
     {{ quiz_detail.no_of_ques }} -->
-    {% if ques_no >= quiz_detail.no_of_ques %}
+
+    <!-- commenting this after update -->
+    <!-- {% if ques_no >= quiz_detail.no_of_ques %}
     <div class="col-12">
       <button type="submit" class="btn btn-primary">Submit Quiz</button>
     </div>
@@ -83,7 +85,11 @@
     <div class="col-12">
         <button type="submit" class="btn btn-primary">Next Question</button>
     </div>
-    {% endif %}
+    {% endif %} -->
+
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Update Ques</button>
+    </div>
 
   </form>
   </div>
