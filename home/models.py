@@ -78,6 +78,7 @@ class course(models.Model):
     category = models.CharField(max_length=100)
     topic = models.CharField(max_length=100)
     course_material = models.TextField()
+    course_pdf = models.FileField(upload_to='static/pdfs/' ,  default='static/pdfs/default_pdf.pdf')
 
     # for sorting records in table in database
     # class Meta:

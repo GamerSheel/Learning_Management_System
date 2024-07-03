@@ -68,73 +68,141 @@ def give_feedback(request , course_id):
 def show_full_result(request , result_id ):
     result_obj = result.objects.filter(result_id=result_id)[0]
     result_question_obj = result_question.objects.filter(result_id=result_id)
-    # print(result_question_obj.ques_id.opt1)
-    context= { 'result_obj' : result_obj , 'result_question_obj': result_question_obj  }
+    course_id=0
+    if result_obj:
+        course_id=result_obj.quiz_id.course_id.course_id
+    context= { 'result_obj' : result_obj , 'result_question_obj': result_question_obj , 
+              'course_id' : course_id , }
     return render(request , 'show_full_result.html' , context)
 
 @login_required(login_url='/login')
 def result_after_quiz(request , result_id , score,total_no_ques ,total_answered ,correctly_answered):
-    print(result_id)
+    # print(result_id)
     # print( ,  score,total_no_ques ,total_answered ,correctly_answered)
     context = {'result_id':result_id , 'score': score, 'total_no_ques': total_no_ques , 
                'total_answered':total_answered ,'correctly_answered':correctly_answered}
     # context={}
     return render(request , 'result_after_quiz.html' , context)
 
+# @login_required(login_url='/login')
+# def give_quiz(request , quiz_id):
+#     all_ques = quiz_ques.objects.filter(quiz_id = quiz_id)
+#     quiz_obj = quiz_desc.objects.filter(quiz_id=quiz_id)[0]
+    
+#     if request.method== 'POST':
+        
+#         result_id="2"
+#         # result_id = quiz_id + "_" + str(datetime.now())
+#         # print(request.user.email)
+#         user=user_details.objects.get(email = request.user.email)
+#         result_obj = result(quiz_id = quiz_obj, student_id =user , result_id=result_id , marks=0 , result_date=datetime.now() )
+#         result_obj.save()
+#         score=0
+#         total_no_ques=len(all_ques)
+#         total_answered=0
+#         correctly_answered=0
+
+#         for ques in all_ques:
+#             answer_marked = request.POST.get(ques.ques_id)
+#             marked_option = 0
+#             if answer_marked == ques.opt1 :
+#                 total_answered+=1
+#                 marked_option=1
+#                 if ques.correct_opt==1 :
+#                     correctly_answered+=1
+#                     score+=ques.ques_marks
+#             elif answer_marked == ques.opt2 :
+#                 total_answered+=1
+#                 marked_option=2
+#                 if ques.correct_opt==2 :
+#                     correctly_answered+=1
+#                     score+=ques.ques_marks
+#             elif answer_marked == ques.opt3 :
+#                 total_answered+=1
+#                 marked_option=3
+#                 if ques.correct_opt==3 :
+#                     correctly_answered+=1
+#                     score+=ques.ques_marks
+#             elif answer_marked == ques.opt4 :
+#                 total_answered+=1
+#                 marked_option=4
+#                 if ques.correct_opt==4 :
+#                     correctly_answered+=1
+#                     score+=ques.ques_marks
+
+#             result_question_obj = result_question(question_id=ques ,  marked_option=marked_option, result_id=result_obj)
+#             result_question_obj.save()
+        
+#         result.objects.filter(result_id="1").update(marks=score)
+
+#         #change it to student dashboard
+#         args=[]
+#         return redirect(reverse('result_after_quiz' ,args=[result_id , score,total_no_ques ,total_answered ,correctly_answered]))
+
+
+#     duration_seconds  = quiz_obj.quiz_duration.total_seconds()
+#     context = {'all_ques' : all_ques , 'quiz_obj' : quiz_obj , 'duration_seconds' : duration_seconds}
+#     return render(request , 'give_quiz.html' , context )
+
 @login_required(login_url='/login')
 def give_quiz(request , quiz_id):
     all_ques = quiz_ques.objects.filter(quiz_id = quiz_id)
     quiz_obj = quiz_desc.objects.filter(quiz_id=quiz_id)[0]
     
+    total_no_ques=0
+    correctly_answered=0
+    total_answered=0
+
     if request.method== 'POST':
         
-        result_id="2"
-        # result_id = quiz_id + "_" + str(datetime.now())
+        # result_id="2"
+        result_id = quiz_id + "_" + str(datetime.now())
         # print(request.user.email)
+        # result_id="1"
+        # result_id = quiz_id + "_" + str(datetime.now())
+        print(request.user.email)
         user=user_details.objects.get(email = request.user.email)
         result_obj = result(quiz_id = quiz_obj, student_id =user , result_id=result_id , marks=0 , result_date=datetime.now() )
         result_obj.save()
         score=0
-        total_no_ques=len(all_ques)
-        total_answered=0
-        correctly_answered=0
 
         for ques in all_ques:
+            total_no_ques+=1
             answer_marked = request.POST.get(ques.ques_id)
             marked_option = 0
             if answer_marked == ques.opt1 :
-                total_answered+=1
                 marked_option=1
                 if ques.correct_opt==1 :
-                    correctly_answered+=1
                     score+=ques.ques_marks
+                    correctly_answered+=1
             elif answer_marked == ques.opt2 :
-                total_answered+=1
                 marked_option=2
                 if ques.correct_opt==2 :
-                    correctly_answered+=1
                     score+=ques.ques_marks
+                    correctly_answered+=1
             elif answer_marked == ques.opt3 :
-                total_answered+=1
                 marked_option=3
                 if ques.correct_opt==3 :
-                    correctly_answered+=1
                     score+=ques.ques_marks
+                    correctly_answered+=1
             elif answer_marked == ques.opt4 :
-                total_answered+=1
                 marked_option=4
                 if ques.correct_opt==4 :
-                    correctly_answered+=1
                     score+=ques.ques_marks
+                    correctly_answered+=1
+
+            if marked_option!=0:
+                total_answered+=1
 
             result_question_obj = result_question(question_id=ques ,  marked_option=marked_option, result_id=result_obj)
             result_question_obj.save()
         
-        result.objects.filter(result_id="1").update(marks=score)
+        result.objects.filter(result_id=result_id).update(marks=score)
 
-        #change it to student dashboard
-        args=[]
         return redirect(reverse('result_after_quiz' ,args=[result_id , score,total_no_ques ,total_answered ,correctly_answered]))
+        result.objects.filter(result_id="1").update(marks=score)
+        #change it to student dashboard
+        return redirect('teacher_dashboard')
 
 
     duration_seconds  = quiz_obj.quiz_duration.total_seconds()
@@ -175,17 +243,18 @@ def delete_ques(request , ques_id):
     ques_obj = quiz_ques.objects.filter(ques_id = ques_id)[0]
     quiz_id = ques_obj.quiz_id.quiz_id
     ques_obj.delete()
+    quiz_desc.objects.filter(quiz_id=quiz_id).update(no_of_ques=ques_obj.quiz_id.no_of_ques-1)
     return redirect(reverse('display_quiz_teacher' ,args=[quiz_id]))
 
 @login_required(login_url='/login')
 def display_quiz_teacher(request , quiz_id):
-    print(quiz_id)
+    # print(quiz_id)
     all_ques = quiz_ques.objects.filter(quiz_id = quiz_id)
     # quizzes = quiz_desc.objects.all()
     quiz_desc.objects.filter(quiz_id=quiz_id+"?").update(quiz_id=quiz_id)
     quiz_obj = quiz_desc.objects.filter(quiz_id = quiz_id)
-    print(quiz_obj)
-    print(len(quiz_obj))
+    # print(quiz_obj)
+    # print(len(quiz_obj))
     
     context = {'all_ques' : all_ques , 'quiz_obj' : quiz_obj[0]}
     return render(request , 'display_quiz_teacher.html' , context)
@@ -193,10 +262,18 @@ def display_quiz_teacher(request , quiz_id):
 @xframe_options_exempt
 @login_required(login_url='/login')
 def display_course_teacher(request , course_id):
-    feedbacks = feedback.objects.filter(course_id=course_id)
     course_obj = course.objects.filter(course_id = course_id)
     all_quiz = quiz_desc.objects.filter(course_id = course_id)
-    context = {'all_quiz' : all_quiz , 'course_obj' : course_obj[0] , 'feedbacks' : feedbacks}
+    all_assignments = assignments.objects.filter(course_id = course_id)
+    feedbacks = feedback.objects.filter(course_id = course_id)
+    pdf_url = '/media/' + str(course_obj[0].course_pdf)
+    pdf_urls = 'media/' + str(course_obj[0].course_pdf)
+    url = '/static/' + str(course_obj[0].course_pdf)
+    # print(pdf_url)
+    # print(pdf_urls)
+    context = {'all_quiz' : all_quiz , 'course_obj' : course_obj[0] , 'feedbacks' : feedbacks ,
+                'pdf_url':pdf_url , 'pdf_urls':pdf_urls, 'url':url , 'all_assignments' : all_assignments,}
+    # context = {'all_quiz' : all_quiz , 'course_obj' : course_obj[0]}
     return render(request , 'display_course_teacher.html' , context)
 
 @login_required(login_url='/login')
@@ -216,6 +293,36 @@ def teacher_dashboard(request):
 
     return render(request , 'teacher_dashboard.html')
 
+# @login_required(login_url='/login')
+# def set_ques(request  , quiz_id): 
+#     if request.method == 'POST':
+#         set_question_form = set_ques_form(request.POST)
+#         if set_question_form.is_valid():
+#             ques_text = set_question_form.cleaned_data['ques_text']
+#             opt1 = set_question_form.cleaned_data['opt1']
+#             opt2 = set_question_form.cleaned_data['opt2']
+#             opt3 = set_question_form.cleaned_data['opt3']
+#             opt4 = set_question_form.cleaned_data['opt4']
+#             correct_opt = set_question_form.cleaned_data['correct_opt']
+#             ques_marks = set_question_form.cleaned_data['ques_marks']
+
+#             quiz_detail=quiz_desc.objects.get(pk=quiz_id)
+#             ques_id=str(request.session['cnt'])+ "_" +str(quiz_id)
+
+#             ques_obj = quiz_ques(ques_text=ques_text , opt1=opt1 , opt2=opt2 , opt3=opt3 , 
+#                                 opt4=opt4 , correct_opt=correct_opt, ques_marks=ques_marks ,
+#                                 quiz_id=quiz_detail , ques_id=ques_id)
+            
+#             ques_obj.save()
+#             request.session['cnt']+=1
+#             if(request.session['cnt'] == quiz_detail.no_of_ques):
+#                 # request.session['cnt']=0
+#                 return redirect('/teacher_dashboard')      
+            
+#     quiz_detail=quiz_desc.objects.get(pk=quiz_id)
+#     set_question_form = set_ques_form()
+#     context = {'form' : set_question_form  , 'ques_no':request.session['cnt'] , 'quiz_detail':quiz_detail}
+#     return render(request , 'set_ques.html' , context)
 @login_required(login_url='/login')
 def set_ques(request  , quiz_id): 
     if request.method == 'POST':
@@ -230,21 +337,48 @@ def set_ques(request  , quiz_id):
             ques_marks = set_question_form.cleaned_data['ques_marks']
 
             quiz_detail=quiz_desc.objects.get(pk=quiz_id)
-            ques_id=str(request.session['cnt'])+ "_" +str(quiz_id)
+            
+            ques_id=""
+            try:
+                if request.session['cnt']!=0:
+                    ques_id=str(request.session['cnt'])+ "_" +str(quiz_id)
+                else:
+                    ques_id=str(quiz_detail.no_of_ques+1)+"_"+str(quiz_id)
+            except:
+                ques_id=str(quiz_detail.no_of_ques+1)+"_"+str(quiz_id)
 
             ques_obj = quiz_ques(ques_text=ques_text , opt1=opt1 , opt2=opt2 , opt3=opt3 , 
                                 opt4=opt4 , correct_opt=correct_opt, ques_marks=ques_marks ,
                                 quiz_id=quiz_detail , ques_id=ques_id)
             
             ques_obj.save()
-            request.session['cnt']+=1
-            if(request.session['cnt'] == quiz_detail.no_of_ques):
-                # request.session['cnt']=0
-                return redirect('/teacher_dashboard')      
+            # request.session['cnt']+=1
+            try :
+                if request.session['cnt']!=0:
+                    if request.session['cnt'] == quiz_detail.no_of_ques:
+                        # request.session['create']=0
+                        request.session['cnt']=0
+                    
+                        return redirect(reverse('display_course_teacher' ,args=[quiz_detail.course_id.course_id ]))
+                    request.session['cnt']+=1
+                else:
+                    quiz_desc.objects.filter(quiz_id=quiz_id).update(no_of_ques=quiz_detail.no_of_ques+1)
+                    return redirect(reverse('display_quiz_teacher' ,args=[quiz_id ]))    
+            except :
+                quiz_desc.objects.filter(quiz_id=quiz_id).update(no_of_ques=quiz_detail.no_of_ques+1)
+                return redirect(reverse('display_quiz_teacher' ,args=[quiz_id ]))   
             
     quiz_detail=quiz_desc.objects.get(pk=quiz_id)
     set_question_form = set_ques_form()
-    context = {'form' : set_question_form  , 'ques_no':request.session['cnt'] , 'quiz_detail':quiz_detail}
+    ques_no=0
+    try: 
+        if request.session['cnt']!=0:
+            ques_no=request.session['cnt']
+        else :
+            ques_no=quiz_detail.no_of_ques+1
+    except:
+        ques_no=quiz_detail.no_of_ques+1
+    context = {'form' : set_question_form  , 'ques_no':ques_no , 'quiz_detail':quiz_detail}
     return render(request , 'set_ques.html' , context)
 
 @login_required(login_url='/login')
@@ -257,7 +391,7 @@ def create_quiz(request , course_id):
             quiz_duration = new_quiz_form.cleaned_data['quiz_duration']
             no_of_ques = new_quiz_form.cleaned_data['no_of_ques']
 
-            quiz_id = course_id+"_" + quiz_title
+            quiz_id = course_id+"_" + quiz_title + "_" + str(datetime.now())
             # quiz_id = 3
             course_id = course.objects.get(pk = course_id)
 
@@ -265,7 +399,8 @@ def create_quiz(request , course_id):
                                  no_of_ques = no_of_ques , quiz_id = quiz_id , course_id = course_id)
             
             quiz_obj.save()
-            request.session['cnt']=0
+            # request.session['cnt']=0
+            request.session['cnt']=1
             return redirect(reverse('set_ques' ,args=[quiz_id ]))
         
     new_quiz_form = create_quiz_form()
@@ -301,7 +436,7 @@ def upload_assignment(request , course_id):
 @login_required(login_url='/login')
 def create_new_course(request):
     if request.method == 'POST':
-        new_course_form = create_new_course_form(request.POST)
+        new_course_form = create_new_course_form(request.POST,request.FILES)
         
         if new_course_form.is_valid():
             course_name = new_course_form.cleaned_data['course_name']
@@ -309,6 +444,7 @@ def create_new_course(request):
             category = new_course_form.cleaned_data['category']
             topic = new_course_form.cleaned_data['topic']
             course_material = new_course_form.cleaned_data['course_material']
+            course_pdf = new_course_form.cleaned_data['course_pdf']
 
             publish_date = datetime.now()
             course_id = str(publish_date)+"_" + course_name
@@ -318,7 +454,7 @@ def create_new_course(request):
             course_obj = course(course_name= course_name , course_duration=course_duration , 
                                       category=category , topic=topic , course_material=course_material ,
                                       publish_date=publish_date , course_id=course_id , 
-                                      teacher_id=teacher_id)
+                                      teacher_id=teacher_id, course_pdf=course_pdf)
             
             course_obj.save()
             return redirect(reverse('create_quiz' ,args=[course_id]))
@@ -471,7 +607,7 @@ def student_dashboard(request):
 @xframe_options_exempt
 @login_required(login_url='/login')
 def display_course_student(request , course_id):
-    print(course_id)
+    # print(course_id)
     course_obj = course.objects.filter(course_id = course_id)
     if request.method == 'POST':
         new_feedback_form = feedback_form(request.POST)
@@ -502,8 +638,8 @@ def display_course_student(request , course_id):
     pdf_url = '/media/' + str(course_obj[0].course_pdf)
     pdf_urls = 'media/' + str(course_obj[0].course_pdf)
     url = '/static/' + str(course_obj[0].course_pdf)
-    print(pdf_url)
-    print(pdf_urls)
+    # print(pdf_url)
+    # print(pdf_urls)
     all_assignments = assignments.objects.filter(course_id = course_id)
     context = {'all_quiz' : all_quiz , 'course_obj' : course_obj[0] , 'feedbacks' : feedbacks ,
                 'pdf_url':pdf_url , 'pdf_urls':pdf_urls, 'url':url , 'form':new_feedback_form , 
