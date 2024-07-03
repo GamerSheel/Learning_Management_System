@@ -35,10 +35,10 @@
             <!-- <h7 class="card-subtitle text-body-secondary">Marks: {{result_ques.question_id.ques_marks}}</h7> -->
                 <p class="card-text mt-0">
                     <p class="mb-0"><strong>Marks Obtained :</strong> {{ result_obj.marks }}</p>
-                    <p class="mb-0"><strong>Result Date:</strong> {{ result_ques.result_date }}</p>
-                    <p class="mb-0"><strong>Total Number of Correct Questions :</strong> -1</p>
-                    <p class="mb-0"><strong>Total Number of Question Attempted:</strong> -1</p>
-                    <p class="mb-0"><strong>Total Number of Questions</strong> -1</p>
+                    <p class="mb-0"><strong>Result Date:</strong> {{ result_obj.result_date }}</p>
+                    <p class="mb-0"><strong>Total Number of Questions :</strong> {{total_no_ques}}</p>
+                    <p class="mb-0"><strong>Total Number of Question Attempted:</strong> {{total_answered}}</p>
+                    <p class="mb-0"><strong>Total Number of Correct Questions:</strong> {{correctly_answered}}</p>
                   </p>
         </div>
     </div>

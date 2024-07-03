@@ -16,7 +16,7 @@ class login_user_form(forms.Form):
 class create_new_course_form(forms.ModelForm):
     class Meta:
         model = course
-        fields = ['course_name' , 'course_duration' , 'category' , 'topic' , 'course_material']
+        fields = ['course_name' , 'course_duration' , 'category' , 'topic' , 'course_material' , 'course_pdf']
 
 class create_quiz_form(forms.ModelForm):
     class Meta:

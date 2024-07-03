@@ -58,7 +58,7 @@ def give_feedback(request , course_id):
             feedback_obj = feedback(user_id=student_id , feedback_date = feedback_date , feedback_text=feedback_text , course_id=course_obj)
             
             feedback_obj.save()
-            return redirect(reverse('display_course_teacher' ,args=[course_id]))
+            return redirect(reverse('display_course_student' ,args=[course_id]))
 
     new_feedback_form =feedback_form()
     context={'course_obj' : course_obj , 'form':new_feedback_form}
@@ -69,10 +69,22 @@ def show_full_result(request , result_id ):
     result_obj = result.objects.filter(result_id=result_id)[0]
     result_question_obj = result_question.objects.filter(result_id=result_id)
     course_id=0
+    total_no_ques=0
+    correctly_answered=0
+    total_answered=0
+
+    for ques in result_question_obj:
+        total_no_ques+=1
+        if ques.marked_option!=0:
+            total_answered+=1
+        if ques.marked_option==ques.question_id.correct_opt:
+            correctly_answered+=1
+
     if result_obj:
         course_id=result_obj.quiz_id.course_id.course_id
+
     context= { 'result_obj' : result_obj , 'result_question_obj': result_question_obj , 
-              'course_id' : course_id , }
+              'course_id' : course_id , 'total_no_ques':total_no_ques , 'correctly_answered':correctly_answered , 'total_answered':total_answered}
     return render(request , 'show_full_result.html' , context)
 
 @login_required(login_url='/login')
