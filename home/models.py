@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User , AbstractUser , AbstractBaseUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.conf import settings
+from datetime import timedelta
 
 # Create your models here.
 
@@ -119,7 +120,7 @@ class enrollment(models.Model):
 class result(models.Model):
     quiz_id = models.ForeignKey(quiz_desc , on_delete=models.CASCADE)
     student_id = models.ForeignKey(user_details , on_delete=models.CASCADE)
-    result_id = models.CharField(max_length=100 , primary_key=True)
+    result_id = models.CharField(max_length=250 , primary_key=True)
     marks = models.IntegerField()
     result_date = models.DateTimeField()
 
@@ -130,6 +131,13 @@ class result_question(models.Model):
     marked_option = models.IntegerField()
     result_id = models.ForeignKey(result , on_delete=models.CASCADE)
     
-
+class assignments(models.Model):
+    assignment_id = models.CharField(max_length=200,primary_key=True)
+    assignment_name = models.TextField()
+    assignment_desc = models.TextField()
+    course_id = models.ForeignKey(course , on_delete=models.CASCADE)
+    assignment_pdf = models.FileField(upload_to='static/pdfs/' ,  default='static/pdfs/default_pdf.pdf')
+    default_duration = timedelta(hours=1)  # Default duration of 1 hour
+    assignment_duration = models.DurationField(default=default_duration)
 
 

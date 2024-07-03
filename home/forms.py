@@ -38,6 +38,11 @@ class feedback_form(forms.ModelForm):
         model = feedback
         fields = [ 'feedback_text' ,]
 
+class assignment_form(forms.ModelForm):
+    class Meta:
+        model = assignments
+        fields = [  'assignment_name', 'assignment_desc' ,  'assignment_pdf' , 'assignment_duration']
+
 # class user_detail_forms(forms.Form):
 #     First_Name = forms.CharField(label = "First Name")
 #     Last_Name = forms.CharField(label = "Last Name" , required=False, widget=forms.TextInput(attrs={'class' : "form-control"}))
